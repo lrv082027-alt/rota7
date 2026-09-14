@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado CEBRASPE - PM MA (Soldado)</title>
+    <style>
+        :root {
+            --bg-primary: #f4f6f9;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent-color: #2563eb;
+            --accent-hover: #1d4ed8;
+            --border-color: #e2e8f0;
+            --success-color: #16a34a;
+            --danger-color: #dc2626;
+            --warning-color: #d97706;
+            --info-color: #0284c7;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --font-scale: 1rem;
+        }
+
+        body.dark-mode {
+            --bg-primary: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: var(--font-scale);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Header Navigation */
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-icon {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.4rem 0.75rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-icon:hover {
+            background-color: var(--border-color);
+        }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.25rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--border-color);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        /* Screen Sections */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Start Screen */
+        .welcome-card {
+            text-align: center;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        .welcome-title {
+            font-size: 1.85rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .info-item {
+            background-color: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-item strong {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .info-item span {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .discipline-list {
+            text-align: left;
+            margin: 1.5rem 0;
+            background: var(--bg-primary);
+            padding: 1.25rem;
+            border-radius: 0.5rem;
+        }
+
+        .discipline-list ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .discipline-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.25rem 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .config-group {
+            margin: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .config-group select {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        /* Quiz Layout */
+        .quiz-container {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .quiz-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .badge {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.25rem 0.6rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .timer-display {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: monospace;
+            color: var(--text-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .timer-warning {
+            color: var(--danger-color);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Text Base Box */
+        .text-base-box {
+            background-color: var(--bg-primary);
+            border-left: 4px solid var(--accent-color);
+            padding: 1rem 1.25rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin-bottom: 1.25rem;
+            font-size: 0.95rem;
+            max-height: 250px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .text-base-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        /* Question Box */
+        .question-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+        }
+
+        .options-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 0.85rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .option-btn:hover {
+            border-color: var(--accent-color);
+        }
+
+        .option-btn.selected-certo {
+            background-color: #dcfce7;
+            border-color: var(--success-color);
+            color: #14532d;
+        }
+
+        .option-btn.selected-errado {
+            background-color: #fee2e2;
+            border-color: var(--danger-color);
+            color: #7f1d1d;
+        }
+
+        .option-btn.selected-branco {
+            background-color: #f1f5f9;
+            border-color: #64748b;
+            color: #334155;
+        }
+
+        body.dark-mode .option-btn.selected-certo {
+            background-color: #064e3b;
+            color: #a7f3d0;
+        }
+        body.dark-mode .option-btn.selected-errado {
+            background-color: #7f1d1d;
+            color: #fecaca;
+        }
+        body.dark-mode .option-btn.selected-branco {
+            background-color: #334155;
+            color: #cbd5e1;
+        }
+
+        .action-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Question Navigation Panel */
+        .grid-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .grid-header {
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .q-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.4rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.2rem;
+        }
+
+        .q-cell {
+            aspect-ratio: 1;
+            border: 1px solid var(--border-color);
+            border-radius: 0.25rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s;
+        }
+
+        .q-cell:hover {
+            border-color: var(--accent-color);
+        }
+
+        .q-cell.active {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 1px;
+        }
+
+        .q-cell.answered {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .q-cell.review {
+            border-color: var(--warning-color);
+        }
+
+        .q-cell.review::after {
+            content: "★";
+            position: absolute;
+            top: 1px;
+            right: 2px;
+            font-size: 0.6rem;
+            color: var(--warning-color);
+        }
+
+        .q-cell.answered.review::after {
+            color: white;
+        }
+
+        .status-legend {
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.4rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .legend-box {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Results Screen */
+        .results-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .res-card {
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .res-card .num {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 0.25rem;
+        }
+
+        .res-card.score .num {
+            color: var(--accent-color);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-primary);
+            font-weight: 700;
+        }
+
+        /* Review Section */
+        .review-filters {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border-radius: 0.375rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .review-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .review-card.correct {
+            border-left: 5px solid var(--success-color);
+        }
+
+        .review-card.incorrect {
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .review-card.blank {
+            border-left: 5px solid var(--text-secondary);
+        }
+
+        .comment-box {
+            margin-top: 1rem;
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--info-color);
+        }
+
+        .shortcut-help {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        /* Modal Resume */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+
+        /* Print styles */
+        @media print {
+            header, .header-actions, .grid-panel, .action-row, .review-filters, .search-box, .btn {
+                display: none !important;
+            }
+            .quiz-container {
+                grid-template-columns: 1fr;
+            }
+            body {
+                background: white;
+                color: black;
+            }
+            .card {
+                border: none;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-title">
+            <span>🛡️</span> <span>Simulado PM-MA | Cebraspe</span>
+        </div>
+        <div class="header-actions">
+            <button class="btn-icon" id="btn-font-dec" title="Diminuir Fonte">A-</button>
+            <button class="btn-icon" id="btn-font-reset" title="Tamanho Padrão">A</button>
+            <button class="btn-icon" id="btn-font-inc" title="Aumentar Fonte">A+</button>
+            <button class="btn-icon" id="btn-theme-toggle" title="Alternar Tema">🌙 / ☀️</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- SCREEN 1: WELCOME / START -->
+        <section id="screen-start" class="screen active">
+            <div class="card welcome-card">
+                <h1 class="welcome-title">1º SIMULADO 2026 — PM MA</h1>
+                <p style="color: var(--text-secondary);">Polícia Militar do Estado do Maranhão — Cargo: Soldado (Pós-Edital)</p>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Banca Examinadora</strong>
+                        <span>CEBRASPE</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Total de Questões</strong>
+                        <span>120 Itens</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Formato</strong>
+                        <span>Certo / Errado</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Pontuação</strong>
+                        <span>Certo: +1 | Errado: -1 | Branco: 0</span>
+                    </div>
+                </div>
+
+                <div class="discipline-list">
+                    <strong>Disciplinas Abrangidas:</strong>
+                    <ul>
+                        <li><span>Língua Portuguesa</span> <strong>15 Qs</strong></li>
+                        <li><span>História do Brasil</span> <strong>06 Qs</strong></li>
+                        <li><span>História do Maranhão</span> <strong>06 Qs</strong></li>
+                        <li><span>Geografia do Brasil</span> <strong>06 Qs</strong></li>
+                        <li><span>Geografia do Maranhão</span> <strong>06 Qs</strong></li>
+                        <li><span>Legislação Pertinente à PMMA</span> <strong>11 Qs</strong></li>
+                        <li><span>Legislação Institucional</span> <strong>30 Qs</strong></li>
+                        <li><span>Noções de Informática</span> <strong>40 Qs</strong></li>
+                    </ul>
+                </div>
+
+                <div class="config-group">
+                    <label for="timer-select"><strong>Tempo de Prova Desejado:</strong></label>
+                    <select id="timer-select">
+                        <option value="180">3 Horas (180 min)</option>
+                        <option value="210" selected>3 Horas e 30 Minutos (210 min)</option>
+                        <option value="240">4 Horas (240 min)</option>
+                        <option value="270">4 Horas e 30 Minutos (270 min)</option>
+                        <option value="300">5 Horas (300 min)</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" id="btn-start-quiz" style="font-size: 1.1rem; padding: 0.8rem 2rem; margin-top: 1rem;">
+                    🚀 Iniciar Simulado Agora
+                </button>
+            </div>
+
+            <!-- History Section -->
+            <div class="card" id="history-card" style="display: none;">
+                <h3>📜 Histórico de Tentativas Anteriores</h3>
+                <div class="table-responsive">
+                    <table id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Pontuação (Pontos)</th>
+                                <th>Acertos</th>
+                                <th>Erros</th>
+                                <th>Brancos</th>
+                                <th>Aproveitamento (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 2: QUIZ INTERFACE -->
+        <section id="screen-quiz" class="screen">
+            <div class="quiz-container">
+                <!-- Left Main Box -->
+                <div>
+                    <div class="card">
+                        <div class="quiz-header">
+                            <div>
+                                <span class="badge" id="discipline-badge">Disciplina</span>
+                                <span style="font-size: 0.85rem; color: var(--text-secondary); margin-left: 0.5rem;" id="q-progress-text">Questão 1 de 120</span>
+                            </div>
+                            <div class="timer-display" id="timer-display">03:30:00</div>
+                        </div>
+
+                        <!-- Text Base container (shown if needed) -->
+                        <div id="text-base-container" class="text-base-box" style="display: none;">
+                            <div class="text-base-title">📜 Texto-base da questão:</div>
+                            <div id="text-base-content"></div>
+                        </div>
+
+                        <!-- Question Statement -->
+                        <div class="question-title" id="question-text">
+                            Carregando questão...
+                        </div>
+
+                        <!-- Options Certo / Errado / Em Branco -->
+                        <div class="options-container">
+                            <button class="option-btn" id="opt-certo" onclick="selectAnswer('C')">CERTO [C]</button>
+                            <button class="option-btn" id="opt-errado" onclick="selectAnswer('E')">ERRADO [E]</button>
+                            <button class="option-btn" id="opt-branco" onclick="selectAnswer('B')">EM BRANCO [B]</button>
+                        </div>
+
+                        <!-- Action Controls -->
+                        <div class="action-row">
+                            <button class="btn btn-outline" id="btn-mark-review" onclick="toggleReviewMark()">
+                                🔖 Marcar para Revisão [M]
+                            </button>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-outline" id="btn-prev" onclick="prevQuestion()">← Anterior</button>
+                                <button class="btn btn-primary" id="btn-next" onclick="nextQuestion()">Próxima →</button>
+                            </div>
+                        </div>
+
+                        <div class="shortcut-help">
+                            Atalhos do Teclado: <strong>C</strong> (Certo) | <strong>E</strong> (Errado) | <strong>B</strong> (Branco) | <strong>M</strong> (Marcar) | <strong>← →</strong> (Navegar)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side Navigation Grid -->
+                <div>
+                    <div class="grid-panel">
+                        <div class="grid-header">
+                            <span>Navegação</span>
+                            <button class="btn-icon" id="btn-finish-exam" onclick="confirmFinishExam()" style="background-color: var(--danger-color); color: white; border: none;">
+                                Finalizar Prova
+                            </button>
+                        </div>
+                        <div class="q-grid" id="question-grid"></div>
+                        <div class="status-legend">
+                            <div class="legend-item"><div class="legend-box" style="background: var(--accent-color);"></div> Respondida</div>
+                            <div class="legend-item"><div class="legend-box" style="background: var(--bg-primary);"></div> Em Branco</div>
+                            <div class="legend-item"><div class="legend-box" style="border-color: var(--warning-color);"></div> Marcada ★</div>
+                            <div class="legend-item"><div class="legend-box" style="outline: 2px solid var(--accent-color);"></div> Atual</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 3: RESULTS & REVIEW -->
+        <section id="screen-results" class="screen">
+            <div class="card">
+                <h2 style="text-align: center; color: var(--accent-color); margin-bottom: 0.5rem;">Resultado Final do Simulado</h2>
+                <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem;">Confira seu desempenho detalhado segundo a métrica oficial do CEBRASPE</p>
+
+                <div class="results-summary">
+                    <div class="res-card score">
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">PONTUAÇÃO CEBRASPE</div>
+                        <div class="num" id="res-score">0</div>
+                    </div>
+                    <div class="res-card">
+                        <div style="font-size: 0.8rem; color: var(--success-color);">ACERTOS (+1)</div>
+                        <div class="num" id="res-correct" style="color: var(--success-color);">0</div>
+                    </div>
+                    <div class="res-card">
+                        <div style="font-size: 0.8rem; color: var(--danger-color);">ERROS (-1)</div>
+                        <div class="num" id="res-wrong" style="color: var(--danger-color);">0</div>
+                    </div>
+                    <div class="res-card">
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">EM BRANCO (0)</div>
+                        <div class="num" id="res-blank">0</div>
+                    </div>
+                    <div class="res-card">
+                        <div style="font-size: 0.8rem; color: var(--info-color);">APROVEITAMENTO</div>
+                        <div class="num" id="res-percent" style="color: var(--info-color);">0%</div>
+                    </div>
+                    <div class="res-card">
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">TEMPO UTILIZADO</div>
+                        <div class="num" id="res-time-spent" style="font-size: 1.1rem;">00:00</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Desempenho Por Disciplina</h3>
+                <div class="table-responsive">
+                    <table id="discipline-results-table">
+                        <thead>
+                            <tr>
+                                <th>Disciplina</th>
+                                <th>Total</th>
+                                <th>Acertos</th>
+                                <th>Erros</th>
+                                <th>Brancos</th>
+                                <th>Pontos</th>
+                                <th>Aproveitamento (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                    <button class="btn btn-outline" onclick="exportResultsJSON()">📥 Exportar Resultado (JSON)</button>
+                    <button class="btn btn-outline" onclick="window.print()">🖨️ Imprimir Resultado</button>
+                    <button class="btn btn-primary" onclick="resetQuiz()">🔄 Refazer Simulado</button>
+                </div>
+            </div>
+
+            <!-- Detailed Review Section -->
+            <div class="card">
+                <h3>Revisão Detalhada das Questões e Gabarito Comentado</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">Pesquise ou filtre as questões para consultar os comentários oficiais presentes na prova.</p>
+
+                <div class="review-filters">
+                    <button class="btn btn-outline" onclick="filterReview('all')">Todas (120)</button>
+                    <button class="btn btn-outline" onclick="filterReview('correct')">Apenas Certas</button>
+                    <button class="btn btn-outline" onclick="filterReview('incorrect')">Apenas Erradas</button>
+                    <button class="btn btn-outline" onclick="filterReview('blank')">Em Branco</button>
+                    <button class="btn btn-outline" onclick="filterReview('marked')">Marcadas ★</button>
+                </div>
+
+                <input type="text" id="search-input" class="search-box" placeholder="Pesquisar por número, palavra-chave no enunciado ou disciplina..." oninput="searchReview()">
+
+                <div id="review-list"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- RESUME PROMPT MODAL -->
+    <div class="modal" id="resume-modal">
+        <div class="modal-content">
+            <h3>Simulado em Andamento Encontrado!</h3>
+            <p style="margin: 1rem 0; color: var(--text-secondary);">Identificamos uma tentativa em andamento salva no seu navegador. Deseja continuar de onde parou ou iniciar um novo simulado?</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
+                <button class="btn btn-primary" onclick="resumeQuizSession()">Continuar Simulado</button>
+                <button class="btn btn-danger" onclick="startNewQuizSession()">Novo Simulado</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURAÇÃO CENTRAL DO SIMULADO
+        const CONFIG = {
+            titulo: "1º SIMULADO 2026 - PM MA",
+            concurso: "Polícia Militar do Estado do Maranhão",
+            cargo: "Soldado QP",
+            banca: "CEBRASPE",
+            edital: "Pós-Edital",
+            dataAplicacao: "09/2026",
+            tempoMinutosPadrao: 210,
+            pontuacaoCerta: 1,
+            pontuacaoErrada: -1,
+            pontuacaoBranco: 0,
+            totalQuestoesEsperadas: 120
+        };
+
+        // TEXTO BASE COMPLETO (Língua Portuguesa - Q01 a Q15)
+        const TEXTO_RICOS = `Ricos
+
+Um amigo meu estava ofendido porque um jornal o chamou de "boa vida". Vejam que país, que tempo, que situação! A vida deveria ser boa para toda gente: o que é insultuoso é que ela seja apenas para alguns.
+"Dinheiro é a coisa mais importante do mundo". Quem escreveu isso não foi nenhum de nossos estimados agiotas. Foi um homem que a vida inteira viveu de seu trabalho e se chamava Bernard Shaw. Não era um cínico, mas um homem de vigorosa fé social, que passou a vida lutando, a seu modo, para tornar melhor a sociedade em que vivia e em certa medida o conseguiu. Ele nos fala de alguns homens ricos:
+"Homens ricos ou aristocratas com um desenvolvido senso de vida — homens como Ruskin, William Morris e Kropotkin — têm enormes apetites sociais... não se contentam com belas casas, querem belas cidades... não se contentam com esposas cheias de diamantes e filhas em flor; queixam-se porque a operária está malvestida, a lavadeira cheira a gin, a costureira é anêmica e porque todo homem que encontram não é um amigo e toda mulher não é um romance... sofrem com a arquitetura da casa do vizinho"...
+Esse "apetite social" é raríssimo entre os nossos homens ricos; a não ser que "social" seja tomado no sentido de mundano... Eu já escrevi que os chamados "cronistas sociais" (mundanos) são muito mais "sociais" do que se supõe, e muitos dentre eles mesmos suspeitam. Eles fazem o retrato de uma classe, ou melhor, de um grupo de uma classe. Como dentro desse grupo há pessoas de grande influência na vida coletiva, a coletividade tem grande interesse nesse retrato. A caixeirinha da loja e o estudante pobre lêem nosso querido Jacinto de Tormes com uma atenção terrível. Não consideram um crime tomar uma "champanhota"; o que confusamente acham criminoso é não poderem eles mesmos beberem sua "champanhota".
+Entretanto o arquiteto Oscar Niemeyer faz uma bela casa ou um maravilhoso edifício e não fica feliz: a cidade é feia. E nossos homens de governo têm uma pasmosa desambição de governar. Não passa sequer pela cabeça de um prefeito do Distrito Federal, quando assume o cargo, a ideia de resolver o problema da água; há uma pobreza íntima fundamental, uma incapacidade dolorosa de extrair prazer, de buscar satisfação em grande estilo.
+Vi há tempos, um conhecido meu, que se tornou muito rico, sofrer horrorosamente na hora de comprar um quadro. Achava o quadro uma beleza, mas como o pintor pedia 20 contos ele se perguntava, e me perguntava, e perguntava a todo mundo se o quadro "valia" 20 contos, se o artista não estaria pedindo aquele preço apenas por sabê-lo rico, se não seria "mais negócio" comprar um quadro de fulano. Fiquei com pena dele, embora saiba que numa noitada de jantar e boate ele gaste tranquilamente aquela importância, sem que isso lhe dê nenhum prazer especial. Fiquei com pena porque realmente ele gostava do quadro, queria tê-lo, mas o prazer que poderia ter obtendo uma coisa ambicionada era estragado pela preocupação do negócio. Se não fosse pelo pintor, que precisava do dinheiro, eu o aconselharia a não comprar.
+Homens públicos sem sentimento público, homens ricos que são, no fundo, pobres diabos, que não descobriram que a única vantagem real de ter dinheiro é não ter que pensar, a todo momento, em dinheiro...
+
+Rubem Braga. Disponível em: <https://cronicabrasileira.org.br/cronicas/10578/ricos>.`;
+
+        // BANCO DE DADOS DE TODAS AS 120 QUESTÕES
+        const questions = [
+            // Língua Portuguesa (Q01 a Q15)
+            { id: 1, numero: 1, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "Considerando a construção argumentativa da crônica \"Ricos\", A crítica aos homens ricos decorre fundamentalmente da condenação moral da riqueza, considerada pelo cronista incompatível com qualquer forma de compromisso social.", gabarito: "E", comentario: "Errado. O cronista não condena a riqueza em si. Pelo contrário, a referência a homens ricos como Ruskin, William Morris e Kropotkin demonstra que possuir recursos pode coexistir com um intenso \"apetite social\". A crítica recai sobre uma riqueza desprovida de amplitude de interesses e de preocupação coletiva." },
+            { id: 2, numero: 2, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "A pobreza criticada pelo cronista ultrapassa a insuficiência material e alcança uma incapacidade de converter recursos, poder ou posição social em realização pessoal e preocupação com a vida coletiva.", gabarito: "C", comentario: "Certo. A expressão final \"homens ricos que são, no fundo, pobres diabos\" revela uma oposição essencial para a interpretação da crônica. A riqueza econômica pode conviver, segundo o cronista, com uma espécie de pobreza interior." },
+            { id: 3, numero: 3, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "No trecho \"Esse 'apetite social' é raríssimo entre os nossos homens ricos; a não ser que 'social' seja tomado no sentido de mundano...\", a retomada entre aspas favorece um deslocamento de sentido: o \"social\" ligado à preocupação com a coletividade é contraposto ao \"social\" entendido como relativo à vida mundana.", gabarito: "C", comentario: "Certo. A passagem constrói seu efeito justamente pela mudança de sentido de \"social\". O \"apetite social\" mencionado anteriormente designa uma preocupação que ultrapassa o bem-estar individual." },
+            { id: 4, numero: 4, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "Em \"Eles fazem o retrato de uma classe, ou melhor, de um grupo de uma classe\", a expressão \"ou melhor\" desempenha, na organização coesiva e argumentativa do período, a função de introduzir a consequência lógica da afirmação de que os cronistas mundanos realizam uma representação da sociedade.", gabarito: "E", comentario: "Errado. Não existe relação de consequência entre \"uma classe\" e \"um grupo de uma classe\". A segunda expressão atua metalinguisticamente sobre a primeira, aperfeiçoando sua precisão (retificação/esclarecimento)." },
+            { id: 5, numero: 5, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "Em \"Fiquei com pena dele, embora saiba que numa noitada de jantar e boate ele gaste tranquilamente aquela importância, sem que isso lhe dê nenhum prazer especial\", a oração destacada é subordinada adjetiva restritiva, pois delimita o conteúdo semântico do substantivo \"pena\".", gabarito: "E", comentario: "Errado. O \"que\", conjunção integrante, introduz uma oração que completa o sentido de \"saiba\" (sabe que...). Trata-se de oração subordinada substantiva objetiva direta, e não adjetiva." },
+            { id: 6, numero: 6, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "Ao considerarmos a seguinte reescrita: \"Há pessoas de grande influência na vida coletiva\" → \"Devem haver, naquele grupo, pessoas de grande influência na vida coletiva\", a segunda construção está de acordo com a norma-padrão, pois, em locuções verbais, o verbo auxiliar deve concordar com o termo plural que funciona como complemento do verbo principal.", gabarito: "E", comentario: "Errado. O verbo haver, quando empregado com sentido de \"existir\", é impessoal e deve permanecer na terceira pessoa do singular. Essa impessoalidade transmite-se ao verbo auxiliar em locuções verbais: \"Deve haver...\"." },
+            { id: 7, numero: 7, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "No período \"A crítica do cronista dirige-se àqueles que, embora disponham de recursos, permanecem indiferentes às necessidades coletivas\", as formas \"dirige-se\" e \"indiferentes\" exigem complemento introduzido pela preposição \"a\", estando, portanto, respeitadas as regras de regência verbal e nominal da norma-padrão.", gabarito: "C", comentario: "Certo. O verbo pronominal \"dirigir-se\" rege a preposição \"a\" (dirige-se a algo/alguém). O adjetivo \"indiferente\" rege igualmente a preposição \"a\" (indiferente a algo)." },
+            { id: 8, numero: 8, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "Em \"O cronista alude à homens ricos cuja preocupação com dinheiro se sobrepõe à qualquer possibilidade de prazer\", os dois sinais indicativos de crase estão corretamente empregados, pois tanto o verbo \"aludir\" quanto o verbo \"sobrepor-se\" exigem a preposição \"a\".", gabarito: "E", comentario: "Errado. Não ocorre crase antes de palavra masculina no plural (\"a homens ricos\") nem antes de pronome indefinido (\"a qualquer possibilidade\"). As formas corretas seriam sem crase." },
+            { id: 9, numero: 9, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "A supressão da vírgula empregada antes de \"sem que\", em \"ele gaste tranquilamente aquela importância, sem que isso lhe dê nenhum prazer especial\", preservaria a correção gramatical e as relações sintáticas do período, uma vez que a oração introduzida por \"sem que\" se encontra posposta à oração à qual se vincula.", gabarito: "C", comentario: "Certo. Em estruturas adverbiais pospostas à oração principal, a vírgula é facultativa, servindo para marcar a pausa ou dar destaque." },
+            { id: 10, numero: 10, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "No trecho \"Não era um cínico, mas um homem de vigorosa fé social, que passou a vida lutando, a seu modo, para tornar melhor a sociedade em que vivia\", a supressão das vírgulas que isolam \"a seu modo\" preservaria a correção gramatical do período, embora alterasse sua organização prosódica.", gabarito: "C", comentario: "Certo. A expressão \"a seu modo\" é um adjunto adverbial de modo de pequena extensão intercalado, cujo isolamento por vírgulas é facultativo." },
+            { id: 11, numero: 11, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "A substituição de \"A vida deveria ser boa para toda gente: o que é insultuoso é que ela seja apenas para alguns\" por \"A vida deveria ser boa para todos; o fato de ela ser boa apenas para alguns é que constitui uma situação insultuosa\" preservaria a correção gramatical e os sentidos fundamentais do texto.", gabarito: "C", comentario: "Certo. A reescrita mantém a oposição fundamental entre o ideal de vida boa acessível a todos e a realidade restrita a alguns, preservando a correção gramatical." },
+            { id: 12, numero: 12, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "A substituição de \"Fiquei com pena porque realmente ele gostava do quadro, queria tê-lo, mas o prazer que poderia ter obtendo uma coisa ambicionada era estragado pela preocupação do negócio\" por \"Embora realmente gostasse do quadro e quisesse tê-lo, fiquei com pena dele, visto que a preocupação com o negócio estragava o prazer que a aquisição poderia proporcionar-lhe\" manteria a correção gramatical e as relações lógico-semânticas estabelecidas originalmente.", gabarito: "E", comentario: "Errado. Ocorre alteração da relação de sentido. No original, o gostar do quadro é a causa da pena do cronista (\"Fiquei com pena porque...\"). Na reescrita, ao introduzir \"Embora...\", transforma-se a causa em uma concessão." },
+            { id: 13, numero: 13, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "A substituição de \"Se não fosse pelo pintor, que precisava do dinheiro, eu o aconselharia a não comprar\" por \"Se não fosse pelo pintor, que precisava do dinheiro, eu aconselharia-o a não comprar\" manteria a correção gramatical do período, pois, inexistindo palavra atrativa imediatamente antes do verbo \"aconselharia\", a ênclise ao futuro do pretérito é admitida pela norma-padrão.", gabarito: "E", comentario: "Errado. A norma-padrão rejeita a ênclise com verbos no futuro do presente ou futuro do pretérito do indicativo. Com o futuro do pretérito (\"aconselharia\"), exige-se a mesóclise (\"aconselhá-lo-ia\") na ausência de próclise." },
+            { id: 14, numero: 14, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "No trecho \"Eu já escrevi que os chamados 'cronistas sociais' (mundanos) são muito mais 'sociais' do que se supõe, e muitos dentre eles mesmos suspeitam\", a substituição de \"são\" por \"eram\" manteria a correção gramatical, mas alteraria a perspectiva temporal do enunciado, pois faria a caracterização dos \"cronistas sociais\" ficar vinculada a um domínio passado, em vez de apresentá-la como válida no momento em que o cronista formula sua avaliação.", gabarito: "C", comentario: "Certo. A substituição altera o tempo de uma verdade genérica atual no presente para uma afirmação circunscrita ao passado." },
+            { id: 15, numero: 15, disciplina: "Língua Portuguesa", textoBase: TEXTO_RICOS, enunciado: "No trecho \"A caixeirinha da loja e o estudante pobre lêem nosso querido Jacinto de Tormes com uma atenção terrível\", os vocábulos \"pobre\" e \"querido\", embora pertençam à mesma classe gramatical, exercem no contexto funções semânticas distintas: o primeiro caracteriza o estudante quanto à sua condição socioeconômica, enquanto o segundo expressa uma avaliação afetiva do enunciador em relação ao referente mencionado.", gabarito: "C", comentario: "Certo. Ambos são adjetivos, mas \"pobre\" tem valor descritivo socioeconômico e \"querido\" tem valor afetuoso/subjetivo." },
+
+            // História do Brasil (Q16 a Q21)
+            { id: 16, numero: 16, disciplina: "História do Brasil", textoBase: "", enunciado: "Embora a exploração do trabalho indígena tenha integrado as primeiras experiências colonizadoras portuguesas, a consolidação da economia açucareira promoveu, ainda durante a primeira metade do século XVI, sua substituição sistemática pela mão de obra africana escravizada nas diferentes regiões da América portuguesa.", gabarito: "E", comentario: "Errado. A substituição sistemática da mão de obra indígena pela africana ocorreu de forma gradual a partir da segunda metade do século XVI e início do XVII, e não na primeira metade do século XVI." },
+            { id: 17, numero: 17, disciplina: "História do Brasil", textoBase: "", enunciado: "Durante a Primeira República, a política dos governadores articulou o governo federal às oligarquias estaduais, e a Comissão de Verificação de Poderes, integrada à estrutura da Justiça Eleitoral, atuava na homologação dos resultados eleitorais, contribuindo para impedir o ingresso de oposicionistas no Congresso Nacional.", gabarito: "E", comentario: "Errado. A Comissão de Verificação de Poderes pertencia à estrutura do próprio Poder Legislativo (Congresso), e não à Justiça Eleitoral, que só foi criada posteriormente, em 1932." },
+            { id: 18, numero: 18, disciplina: "História do Brasil", textoBase: "", enunciado: "A Revolução de 1930 não pode ser explicada exclusivamente pela denúncia de fraude na eleição vencida por Júlio Prestes, uma vez que práticas fraudulentas integravam o funcionamento eleitoral do período e foram empregadas também por setores oposicionistas; a ruptura de outubro resultou de uma articulação política e militar que impediu a posse do candidato oficialmente eleito e conduziu Getúlio Vargas ao poder.", gabarito: "C", comentario: "Certo. O movimento de 1930 decorreu de uma crise estrutural oligárquica e de articulações político-militares, indo muito além do mero protesto contra a fraude eleitoral (prática comum a ambos os lados)." },
+            { id: 19, numero: 19, disciplina: "História do Brasil", textoBase: "", enunciado: "As mudanças institucionais posteriores à Revolução de 1930 incluíram a criação da Justiça Eleitoral e a adoção do voto secreto, medidas que procuravam reformar práticas políticas herdadas da Primeira República; posteriormente, durante o Estado Novo, o fortalecimento do Executivo federal foi acompanhado pela supressão dos órgãos legislativos e pela subordinação dos interventores estaduais ao governo central.", gabarito: "C", comentario: "Certo. O Código Eleitoral de 1932 criou a Justiça Eleitoral e o voto secreto. Em 1937, o Estado Novo fechou o Congresso e centralizou o poder no Executivo." },
+            { id: 20, numero: 20, disciplina: "História do Brasil", textoBase: "", enunciado: "O Plano de Metas constituiu um planejamento global da economia brasileira, estruturado para coordenar de forma integrada a totalidade dos setores produtivos nacionais; dentro desse modelo, a construção de Brasília figurava como meta-síntese das políticas destinadas a energia, transportes, alimentação, indústria de base e educação.", gabarito: "E", comentario: "Errado. O Plano de Metas do governo JK não era um planejamento global de toda a economia, mas sim um plano setorial focado em pontos estratégicos (energia, transportes, alimentação, indústria de base e educação, além da meta-síntese Brasília)." },
+            { id: 21, numero: 21, disciplina: "História do Brasil", textoBase: "", enunciado: "O AI-5, editado em dezembro de 1968, aprofundou os instrumentos autoritários do regime instaurado em 1964, permitindo, entre outras medidas, o fechamento do Congresso e a suspensão do habeas corpus para crimes políticos; décadas depois, o processo de redemocratização resultou na Constituição de 1988, que ampliou direitos e garantias individuais e restabeleceu um ordenamento político democrático.", gabarito: "C", comentario: "Certo. O AI-5 representou o endurecimento do regime militar. A CF/88 restabeleceu a democracia e os direitos fundamentais." },
+
+            // História do Maranhão (Q22 a Q27)
+            { id: 22, numero: 22, disciplina: "História do Maranhão", textoBase: "", enunciado: "A experiência colonial francesa conhecida como França Equinocial resultou da tentativa de ocupação do Maranhão no início do século XVII e teve como marco a expedição comandada por Daniel de La Touche, que, em 1612, chegou à Ilha de Upaon-Açu com colonos franceses e participou do estabelecimento do núcleo que daria origem à cidade de São Luís.", gabarito: "C", comentario: "Certo. A expedição de Daniel de La Touche (Senhor de La Ravardière) fundou a França Equinocial na ilha de Upaon-Açu em 1612." },
+            { id: 23, numero: 23, disciplina: "História do Maranhão", textoBase: "", enunciado: "A fundação de São Luís, em 1612, esteve vinculada ao empreendimento da França Equinocial, sendo a denominação Saint-Louis associada ao forte erguido pelos franceses em homenagem ao rei Luís XIII, nome que posteriormente se estendeu à povoação e à própria ilha.", gabarito: "C", comentario: "Certo. O Forte de Saint-Louis homenageou o rei francês Luís XIII, dando origem ao nome da cidade de São Luís." },
+            { id: 24, numero: 24, disciplina: "História do Maranhão", textoBase: "", enunciado: "A Batalha de Guaxenduba, ocorrida em 1614, encerrou imediatamente a presença francesa no Maranhão, pois, após a derrota no confronto, Daniel de La Touche e seus aliados abandonaram definitivamente a região ainda naquele mesmo ano.", gabarito: "E", comentario: "Errado. A Batalha de Guaxenduba em 1614 enfraqueceu os franceses, mas a rendição e expulsão definitiva só ocorreram em 1615, com a chegada das forças comandadas por Jerônimo de Albuquerque." },
+            { id: 25, numero: 25, disciplina: "História do Maranhão", textoBase: "", enunciado: "A resistência maranhense à Independência do Brasil articulou-se aos vínculos econômicos e políticos mantidos por grupos locais com Portugal. Nesse contexto, após deixar o Piauí e estabelecer-se em Caxias, João José da Cunha Fidié passou a coordenar, juntamente com Lord Cochrane, as operações que culminaram na adesão do Maranhão ao Império em julho de 1823.", gabarito: "E", comentario: "Errado. Fidié era o comandante das tropas portuguesas fiéis à Coroa. Lord Cochrane comandava a frota imperial brasileira que forçou a rendição de São Luís e a adesão do Maranhão ao Império. Eles lutavam em lados opostos." },
+            { id: 26, numero: 26, disciplina: "História do Maranhão", textoBase: "", enunciado: "A Balaiada resultou da combinação entre crise econômica, disputas políticas locais e tensões sociais, reunindo personagens de origens distintas. Raimundo Gomes, Manuel Balaio e Negro Cosme expressaram essa heterogeneidade, enquanto a repressão conduzida por Luís Alves de Lima e Silva articulou ação militar e concessão de anistia como instrumentos de pacificação da província.", gabarito: "C", comentario: "Certo. A Balaiada (1838–1841) uniu diversos setores sociais. Luís Alves de Lima e Silva (futuro Duque de Caxias) pacificou a região combinando ação militar e anistia." },
+            { id: 27, numero: 27, disciplina: "História do Maranhão", textoBase: "", enunciado: "A Revolução de 1930 no Maranhão produziu a deposição de José Pires Sexto e a formação de uma junta governativa integrada por José Maria dos Reis Perdigão, Celso Freitas e José de Ribamar Maciel Campos; a seguir, a estabilidade política foi restabelecida com a permanência de José Luso Torres como interventor durante todo o período inicial do novo regime.", gabarito: "E", comentario: "Errado. José Luso Torres permaneceu como interventor por pouquíssimo tempo (de novembro a dezembro de 1930), sendo sucedido por José Maria dos Reis Perdigão e posteriormente Astolfo de Barros Serra." },
+
+            // Geografia do Brasil (Q28 a Q33)
+            { id: 28, numero: 28, disciplina: "Geografia do Brasil", textoBase: "", enunciado: "A internacionalização da economia brasileira resultou em maior concentração dos investimentos estrangeiros diretos nas regiões metropolitanas do Centro-Sul, reforçando as desigualdades regionais herdadas do processo de industrialização.", gabarito: "C", comentario: "Certo. A atração de investimentos estrangeiros a partir dos anos 1990 priorizou as áreas com maior infraestrutura e mercado consumidor no Centro-Sul." },
+            { id: 29, numero: 29, disciplina: "Geografia do Brasil", textoBase: "", enunciado: "A emergência de cidades médias do agronegócio no Centro-Oeste e no MATOPIBA como nós de comando regional caracteriza um processo de desconcentração da urbanização brasileira que rompe com o modelo de metropolização polarizada por São Paulo, na medida em que essas cidades passaram a deter, também no plano financeiro, autonomia decisória equivalente à das metrópoles nacionais, tornando-se independentes do sistema bancário e do mercado de capitais sediado no eixo Rio-São Paulo.", gabarito: "E", comentario: "Errado. Embora haja desconcentração produtiva e surgimento de centros urbanos médios no agronegócio, o comando financeiro, bancário e de mercado de capitais continua altamente centralizado no eixo Rio-São Paulo." },
+            { id: 30, numero: 30, disciplina: "Geografia do Brasil", textoBase: "", enunciado: "O crescimento demográfico brasileiro ao longo do século XX apresentou uma fase de aceleração associada à queda da mortalidade, em razão de melhorias nas condições sanitárias e de saúde pública, sem que houvesse, nesse mesmo período, uma queda proporcional da natalidade, o que resultou em elevadas taxas de crescimento vegetativo; somente nas últimas décadas do século observou-se uma redução mais acentuada da natalidade, levando à desaceleração do ritmo de crescimento populacional.", gabarito: "C", comentario: "Certo. Descreve perfeitamente as fases da transição demográfica brasileira ao longo do século XX." },
+            { id: 31, numero: 31, disciplina: "Geografia do Brasil", textoBase: "", enunciado: "A urbanização acelerada e pouco planejada das metrópoles brasileiras contribuiu para a formação de vazios urbanos — áreas dotadas de infraestrutura e retidas para fins de especulação imobiliária —, ao mesmo tempo em que empurrou parcela significativa da população de baixa renda para ocupações irregulares em áreas periféricas ou ambientalmente frágeis, configurando um padrão de expansão urbana horizontalizado e espacialmente descontínuo, e não um crescimento compacto e contíguo a partir do núcleo original das cidades.", gabarito: "C", comentario: "Certo. O padrão de urbanização periférico e marcado pela especulação imobiliária gerou vazios urbanos e segregação socioespacial." },
+            { id: 32, numero: 32, disciplina: "Geografia do Brasil", textoBase: "", enunciado: "O descompasso entre a elevada disponibilidade hídrica da Região Norte e a intensa demanda por água nas regiões mais populosas do país é corrigido, do ponto de vista da gestão hídrica nacional, pela adoção do estado como unidade territorial de planejamento e alocação de recursos hídricos, de modo que cabe a cada unidade da Federação gerir de forma autônoma a totalidade da água disponível em seu território, independentemente da bacia hidrográfica à qual pertença; foi por essa razão que a região Nordeste, embora inserida majoritariamente na bacia do São Francisco — cujas águas nascem em Minas Gerais —, não depende, do ponto de vista legal, de qualquer articulação federativa para garantir sua segurança hídrica.", gabarito: "E", comentario: "Errado. Segundo a Política Nacional de Recursos Hídricos (Lei 9.433/97), a unidade territorial de planejamento é a bacia hidrográfica (e não o estado). Bacias interfederativas exigem articulação entre União e estados." },
+            { id: 33, numero: 33, disciplina: "Geografia do Brasil", textoBase: "", enunciado: "A concentração industrial em São Paulo, consolidada ao longo da primeira metade do século XX, esteve associada a fatores como a disponibilidade prévia de capital acumulado pela cafeicultura, a existência de mão de obra assalariada (herdada em parte da imigração europeia) e a proximidade com o principal mercado consumidor do país; a posterior desconcentração industrial, iniciada nos anos 1970, foi impulsionada por fatores como o aumento dos custos de aglomeração na capital paulista (congestionamentos, poluição, valorização fundiária) e por políticas de incentivo fiscal de outros estados, resultando em um processo de interiorização que se deu, num primeiro momento, prioritariamente para municípios do próprio interior paulista e do ABC, antes de se espraiar para outras regiões do país.", gabarito: "C", comentario: "Certo. Sintetiza corretamente os fatores de concentração industrial inicial em SP e a dinâmica subsequente de desconcentração espacial." },
+
+            // Geografia do Maranhão (Q34 a Q39)
+            { id: 34, numero: 34, disciplina: "Geografia do Maranhão", textoBase: "", enunciado: "O estado do Maranhão faz divisa, no sentido horário a partir do norte, com o oceano Atlântico, o estado do Piauí a leste, o estado do Tocantins ao sul e sudeste, e o estado do Pará a oeste e noroeste, sendo este último o único estado limítrofe pertencente à Região Norte, o que reforça o caráter de transição do território maranhense entre o Nordeste e a Amazônia.", gabarito: "C", comentario: "Certo. Os limites geográficos do estado do Maranhão estão descritos com total exatidão." },
+            { id: 35, numero: 35, disciplina: "Geografia do Maranhão", textoBase: "", enunciado: "A distribuição espacial da pluviosidade no Maranhão é marcada por forte gradiente decrescente no sentido oeste-leste, de modo que a porção ocidental do estado, sob maior influência da Zona de Convergência Intertropical (ZCIT) e da Massa Equatorial Continental, registra os maiores índices pluviométricos anuais (podendo superar 2.000 mm), ao passo que a porção leste, mais próxima da influência do semiárido nordestino, apresenta índices sensivelmente menores, o que se reflete também na maior duração do período seco nessa porção do território.", gabarito: "C", comentario: "Certo. A pluviosidade cai do oeste (úmido/amazônico) para o leste (próximo ao semiárido)." },
+            { id: 36, numero: 36, disciplina: "Geografia do Maranhão", textoBase: "", enunciado: "A predominância de baixas altitudes no relevo maranhense e a suave declividade que caracteriza a maior parte do território favorecem a mecanização da agricultura de grãos praticada no sul e sudoeste do estado, região inserida no contexto de expansão da fronteira agrícola do Cerrado, onde se localiza o ponto culminante do estado — a Chapada das Mangabeiras, no Planalto Meridional — sem que essa elevação represente obstáculo relevante à ocupação agrícola da região.", gabarito: "C", comentario: "Certo. O relevo de chapadas suavemente onduladas no sul do MA viabiliza a mecanização agrícola no Cerrado/MATOPIBA." },
+            { id: 37, numero: 37, disciplina: "Geografia do Maranhão", textoBase: "", enunciado: "A elevada população absoluta do Maranhão permite concluir que o estado apresenta, de maneira geral, elevada densidade demográfica em todo o seu território, uma vez que o número total de habitantes constitui o principal fator responsável pela concentração espacial da população.", gabarito: "E", comentario: "Errado. População absoluta elevada não implica densidade demográfica homogênea ou alta, pois esta depende da divisão pela extensão territorial. O Maranhão possui grande extensão e população concentrada em focos urbanos/litorâneos." },
+            { id: 38, numero: 38, disciplina: "Geografia do Maranhão", textoBase: "", enunciado: "A expansão da produção mecanizada de grãos no Maranhão, especialmente de soja e milho, contribuiu para a inserção de áreas do sul e do leste do estado em circuitos agroindustriais de maior escala, mas esse processo não implicou a substituição generalizada da agricultura tradicional nem a homogeneização do espaço rural, uma vez que permanecem diferentes sistemas produtivos, estruturas fundiárias e formas de criação pecuária coexistindo no território maranhense.", gabarito: "C", comentario: "Certo. A modernização agrícola no MA é espacialmente seletiva e coexiste com a agricultura familiar tradicional e a pecuária." },
+            { id: 39, numero: 39, disciplina: "Geografia do Maranhão", textoBase: "", enunciado: "O extrativismo maranhense apresenta caráter exclusivamente vegetal, associado sobretudo à exploração do babaçu, enquanto o extrativismo mineral possui participação pouco significativa na economia estadual e não estabelece relações relevantes com as atividades industriais, que se concentram predominantemente em unidades de transformação voltadas ao abastecimento do mercado interno.", gabarito: "E", comentario: "Errado. O extrativismo no MA não é exclusivamente vegetal (há pesca e mineral). Além disso, a mineração/metalurgia (ex: alumina/alumínio em São Luís e o corredor de ferro da Vale) é pilar central da economia maranhense." },
+
+            // Legislação Pertinente à PMMA (Q40 a Q50)
+            { id: 40, numero: 40, disciplina: "Legislação Pertinente à PMMA", textoBase: "", enunciado: "O Regulamento para as Polícias Militares e Corpos de Bombeiros Militares (R-200) estabelece princípios e normas para a aplicação do Decreto-Lei n. 667, de 2 de julho de 1969, modificado pelo Decreto-Lei n. 1.406, de 24 de junho de 1975, e pelo Decreto-Lei n. 2.010, de 12 de janeiro de 1983.", gabarito: "C", comentario: "Certo. É exatamente a finalidade do R-200 (Decreto nº 88.777/1983)." },
+            { id: 41, numero: 41, disciplina: "Legislação Pertinente à PMMA", textoBase: "", enunciado: "Segundo o art. 2º do R-200, disposição é a situação em que se encontra o policial-militar a serviço de órgão ou autoridade a que esteja diretamente subordinado.", gabarito: "E", comentario: "Errado. Disposição é a situação em que o policial-militar se encontra a serviço de órgão ou autoridade a que NÃO esteja diretamente subordinado." },
+            { id: 42, numero: 42, disciplina: "Legislação Pertinente à PMMA", textoBase: "", enunciado: "Nos termos do art. 8º do R-200, o policial do serviço ativo do Exército nomeado para comandar Polícia Militar ou Corpo de Bombeiro Militar passará à disposição do respectivo Governo do Estado pelo prazo de 2 anos, prorrogável por mais 2 anos, por proposta dos Governadores respectivos.", gabarito: "C", comentario: "Certo. Art. 8º, §§ 1º e 2º do R-200." },
+            { id: 43, numero: 43, disciplina: "Legislação Pertinente à PMMA", textoBase: "", enunciado: "Consoante o art. 43 do R-200, os direitos, a remuneração, as prerrogativas e os deveres do pessoal das Polícias Militares não podem ser superiores aos atribuídos ao pessoal das Forças Armadas, ressalvada, no tocante a Cabos e Soldados, exceção quanto à remuneração e à idade-limite para permanência no serviço ativo.", gabarito: "C", comentario: "Certo. Reproduz fielmente a regra do art. 43 e seu parágrafo único no R-200." },
+            { id: 44, numero: 44, disciplina: "Legislação Pertinente à PMMA", textoBase: "", enunciado: "Nos termos do art. 9º, I, do Código Penal Militar, os crimes previstos exclusivamente no Código, ou nele definidos de modo diverso da lei penal comum, são considerados crimes militares em tempo de paz, qualquer que seja o agente, salvo disposição especial.", gabarito: "C", comentario: "Certo. Art. 9º, I do CPM (crimes propriamente militares e crimes com definição diversa)." },
+            { id: 45, numero: 45, disciplina: "Legislação Pertinente à PMMA", textoBase: "", enunciado: "Segundo a redação atual do art. 9º, § 2º, do Código Penal Militar, dada pela Lei n. 14.688/2023, os crimes dolosos contra a vida cometidos por militares das Forças Armadas contra civil são sempre da competência da Justiça Militar da União, independentemente do contexto em que praticados.", gabarito: "E", comentario: "Errado. São de competência da JMU apenas se praticados nas hipóteses do § 2º (cumprimento de atribuições da Presidência/Defesa, GLO, segurança de instalações etc.). Fora desses contextos específicos, a competência é do Tribunal do Júri." },
+            { id: 46, numero: 46, disciplina: "Legislação Pertinente à PMMA", textoBase: "", enunciado: "O Código Penal Militar consagra o princípio da legalidade penal militar, segundo o qual não há crime sem lei anterior que o defina, nem pena sem prévia cominação legal.", gabarito: "C", comentario: "Certo. Art. 1º do CPM." },
+            { id: 47, numero: 47, disciplina: "Legislação Pertinente à PMMA", textoBase: "", enunciado: "Configura o crime de deserção, previsto no Código Penal Militar, ausentar-se o militar, sem licença, da unidade em que serve, ou do lugar em que deve permanecer, por mais de oito dias.", gabarito: "C", comentario: "Certo. Art. 187 do CPM (ausência injustificada por mais de 8 dias)." },
+            { id: 48, numero: 48, disciplina: "Legislação Pertinente à PMMA", textoBase: "", enunciado: "A Lei Estadual n. 10.823/2018 dispõe sobre a criação e a transformação de Organizações Policiais Militares (OPM) da Polícia Militar do Maranhão, dando outras providências correlatas.", gabarito: "C", comentario: "Certo. É a ementa exata da Lei Estadual nº 10.823/2018." },
+            { id: 49, numero: 49, disciplina: "Legislação Pertinente à PMMA", textoBase: "", enunciado: "Entre os órgãos criados pela Lei n. 10.823/2018 está a Diretoria de Ensino Regular (DER), unidade posteriormente sucedida, em todas as suas competências e atribuições, pela Diretoria-Geral de Ensino Regular (DGER), instituída por lei superveniente.", gabarito: "C", comentario: "Certo. A DGER sucedeu a antiga DER criada em 2018." },
+            { id: 50, numero: 50, disciplina: "Legislação Pertinente à PMMA", textoBase: "", enunciado: "Entre as unidades operacionais criadas pela Lei n. 10.823/2018 estavam batalhões de motopatrulhamento tático e uma companhia de policiamento náutico, além de um batalhão de Polícia Militar.", gabarito: "C", comentario: "Certo. A lei criou o 46º BPM, 1º e 2º Batalhões de Motopatrulhamento Tático, Companhia Náutica, entre outras." },
+
+            // Legislação Institucional (Q51 a Q80)
+            { id: 51, numero: 51, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Nos termos do art. 8º do Estatuto dos Policiais-Militares do Maranhão (Lei n. 6.513/1995), o ingresso na Polícia Militar do Maranhão é facultado a todos os brasileiros, sem distinção de raça ou crença religiosa, mediante matrícula ou nomeação, após aprovação em concurso público de provas e/ou de provas e títulos.", gabarito: "C", comentario: "Certo. Art. 8º da Lei Estadual nº 6.513/1995." },
+            { id: 52, numero: 52, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Consoante o art. 9º do Estatuto, para a matrícula nos estabelecimentos de ensino militar destinados à formação de Oficiais, Sargentos e Soldados, o candidato deve possuir, até a data-limite da inscrição, idade máxima de 28 anos, além de altura mínima de 1,65 m para o sexo masculino e de 1,60 m para o sexo feminino.", gabarito: "E", comentario: "Errado. Com as alterações legislativas posteriores, a idade máxima para concurso na PMMA foi elevada para 35 anos, e as alturas mínimas são 1,60m (masculino) e 1,55m (feminino)." },
+            { id: 53, numero: 53, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Para o ingresso no Quadro de Oficiais de Administração (QOA) e de Oficiais Especialistas (QOE), o art. 11, I, do Estatuto exige, na redação atualmente em vigor, que o Subtenente candidato possua diploma de conclusão de curso de nível superior, ou equivalente, devidamente reconhecido pelo Ministério da Educação (MEC).", gabarito: "C", comentario: "Certo. Redação dada pela Lei nº 10.670/2017." },
+            { id: 54, numero: 54, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Nos termos do art. 17 do Estatuto, disciplina é a ordenação da autoridade em níveis diferentes, observada a subordinação em diversos postos e graduações que constituem a carreira militar, enquanto hierarquia consiste na rigorosa observância e no acatamento integral às leis, regulamentos, normas e disposições que fundamentam o organismo policial-militar.", gabarito: "E", comentario: "Errado. Os conceitos foram invertidos. Hierarquia é a ordenação da autoridade em níveis diferentes. Disciplina é a rigorosa observância e acatamento das leis e regulamentos." },
+            { id: 55, numero: 55, disciplina: "Legislação Institucional", textoBase: "", enunciado: "De acordo com a redação atual do art. 36 do Estatuto, o militar posto à disposição dos órgãos elencados nesse dispositivo — a exemplo da Defensoria Pública do Maranhão, incluída pela Lei n. 12.597/2025 — sujeita-se ao instituto da agregação, do mesmo modo que ocorre em relação aos militares nomeados para cargo em comissão em geral.", gabarito: "E", comentario: "Errado. Com a alteração trazida pela Lei nº 12.597/2025 (art. 36, § 3º), ao militar posto à disposição dos órgãos elencados no artigo NÃO SE APLICA o instituto da agregação." },
+            { id: 56, numero: 56, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Conforme o art. 62, III, alínea 'a', do Estatuto, é assegurada a estabilidade às praças da Polícia Militar do Maranhão que contarem com 10 anos de efetivo serviço, nas condições e nas limitações impostas pela legislação e regulamentação específica e peculiar.", gabarito: "C", comentario: "Certo. Art. 62, III, 'a' do Estatuto (10 anos de efetivo serviço)." },
+            { id: 57, numero: 57, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Nos termos do art. 65 do Estatuto, a remuneração dos policiais-militares da ativa é constituída exclusivamente de soldo, não se admitindo o pagamento de gratificações ou de indenizações a esses servidores.", gabarito: "E", comentario: "Errado. A remuneração é constituída por soldo, gratificações e indenizações." },
+            { id: 58, numero: 58, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Segundo o art. 93 do Estatuto, a licença-prêmio, relativa a cada quinquênio de efetivo serviço prestado, tem duração de três meses e é gozada de uma só vez, quando solicitada pelo interessado, sem que isso implique qualquer restrição para a carreira ou a remuneração do militar.", gabarito: "C", comentario: "Certo. Art. 93, caput e § 1º do Estatuto." },
+            { id: 59, numero: 59, disciplina: "Legislação Institucional", textoBase: "", enunciado: "O art. 100 do Estatuto estabelece que o policial-militar somente poderá ser preso por autoridade policial em caso de flagrante delito, devendo, nessa hipótese, ser apresentado imediatamente à autoridade militar mais próxima após a lavratura do respectivo auto.", gabarito: "C", comentario: "Certo. Art. 100 do Estatuto (garantia prerrogativa funcional)." },
+            { id: 60, numero: 60, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Segundo o art. 106 do Estatuto, agregação é a situação na qual o policial-militar da ativa passa a ocupar, em caráter permanente, nova vaga na escala hierárquica de outro quadro, perdendo definitivamente a sua posição de origem, situação que se aplica, inclusive, ao militar posto à disposição dos órgãos elencados no art. 36.", gabarito: "E", comentario: "Errado. Agregação é situação temporária em que o militar deixa de ocupar vaga na escala hierárquica do seu quadro, nela permanecendo sem número. Não há perda definitiva da posição de origem." },
+            { id: 61, numero: 61, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Consoante o art. 125, I, do Estatuto, o oficial do sexo masculino, quando na reserva remunerada, será reformado ao atingir a idade-limite de 66 anos, permanecendo igualmente em vigor as idades-limites de 64 e de 59 anos previstas para as praças dos sexos masculino e feminino, respectivamente.", gabarito: "E", comentario: "Errado. As alíneas 'c' e 'd' relativas a prazos e idades-limite antigas das praças foram revogadas pela Lei Complementar nº 224/2020." },
+            { id: 62, numero: 62, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Nos termos do art. 2º da Lei n. 14.751/2023, as Polícias Militares e os Corpos de Bombeiros Militares dos Estados, do Distrito Federal e dos Territórios são instituições militares, forças auxiliares e reserva do Exército, nos termos do § 6º do art. 144 da Constituição Federal, organizadas com base na hierarquia e na disciplina militares e comandadas por oficial da ativa do último posto, integrante do Quadro de Oficiais de Estado-Maior (QOEM) da respectiva instituição.", gabarito: "C", comentario: "Certo. Art. 2º da Lei Orgânica Nacional das Polícias Militares (Lei nº 14.751/2023)." },
+            { id: 63, numero: 63, disciplina: "Legislação Institucional", textoBase: "", enunciado: "De acordo com o art. 2º, § 1º, da Lei n. 14.751/2023, às Polícias Militares dos Estados, do Distrito Federal e dos Territórios, integrantes do Sistema Único de Segurança Pública (Susp), cabe a proteção dos direitos fundamentais no âmbito da preservação da ordem pública, da polícia ostensiva e da polícia judiciária militar.", gabarito: "C", comentario: "Certo. Art. 2º, § 1º da Lei nº 14.751/2023." },
+            { id: 64, numero: 64, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Segundo o art. 2º, § 2º, da Lei n. 14.751/2023, a perícia administrativa de incêndio e explosão é atribuição das Polícias Militares, e não dos Corpos de Bombeiros Militares.", gabarito: "E", comentario: "Errado. A perícia administrativa de incêndio e explosão cabe aos Corpos de Bombeiros Militares (art. 2º, § 2º), e não às Polícias Militares." },
+            { id: 65, numero: 65, disciplina: "Legislação Institucional", textoBase: "", enunciado: "A Lei n. 14.751/2023 instituiu o Conselho Nacional de Comandantes-Gerais de Polícia Militar, como instância de articulação nacional entre as corporações estaduais, distritais e territoriais.", gabarito: "C", comentario: "Certo. Instituído expressamente pela nova Lei Orgânica Nacional." },
+            { id: 66, numero: 66, disciplina: "Legislação Institucional", textoBase: "", enunciado: "A Lei n. 14.751/2023, além de instituir a Lei Orgânica Nacional das Polícias Militares e dos Corpos de Bombeiros Militares, também alterou a Lei n. 13.675, de 11 de junho de 2018 (Lei do SUSP), e revogou dispositivos do Decreto-lei n. 667, de 2 de julho de 1969.", gabarito: "C", comentario: "Certo. Conforme a ementa e disposições finais da Lei nº 14.751/2023." },
+            { id: 67, numero: 67, disciplina: "Legislação Institucional", textoBase: "", enunciado: "O texto da Lei n. 14.751/2023 foi integralmente sancionado pelo Presidente da República, sem qualquer veto a dispositivos do projeto de lei aprovado pelo Congresso Nacional.", gabarito: "E", comentario: "Errado. O projeto sofreu vetos presidenciais parciais na sanção." },
+            { id: 68, numero: 68, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Ao policial-militar da ativa é vedado comerciar ou tomar parte na administração ou gerência de sociedade, ou dela ser sócio ou participar, ressalvada a condição de acionista ou quotista em sociedade anônima ou por quotas de responsabilidade limitada.", gabarito: "C", comentario: "Certo. Art. 41, caput do Estatuto." },
+            { id: 69, numero: 69, disciplina: "Legislação Institucional", textoBase: "", enunciado: "O Estatuto não prevê a licença-paternidade entre as modalidades de licença a que o policial-militar tem direito, restringindo-se o rol às licenças-prêmio, para tratamento de saúde em pessoa da família, para tratar de interesse particular, para tratamento de saúde e à gestante.", gabarito: "E", comentario: "Errado. O art. 92, § 1º prevê expressamente a licença-paternidade (inciso VI)." },
+            { id: 70, numero: 70, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Entre as prerrogativas dos policiais-militares previstas no Estatuto está o julgamento em foro especial, nos crimes militares.", gabarito: "C", comentario: "Certo. Art. 99, IV do Estatuto." },
+            { id: 71, numero: 71, disciplina: "Legislação Institucional", textoBase: "", enunciado: "No concurso de crime militar e de transgressão disciplinar decorrentes do mesmo fato, o Estatuto determina a aplicação cumulativa de ambas as penalidades, a militar e a disciplinar.", gabarito: "E", comentario: "Errado. O art. 55, § 2º determina que no concurso de crime militar e transgressão disciplinar decorrentes do mesmo fato, será aplicada SOMENTE a pena relativa ao crime." },
+            { id: 72, numero: 72, disciplina: "Legislação Institucional", textoBase: "", enunciado: "São recompensas militares, segundo o Estatuto, o prêmio de Honra ao Mérito, as condecorações por serviços prestados, os elogios e louvores, e as dispensas do serviço.", gabarito: "C", comentario: "Certo. Art. 158, § 1º do Estatuto." },
+            { id: 73, numero: 73, disciplina: "Legislação Institucional", textoBase: "", enunciado: "O compromisso de honra prestado pelo cidadão ao ingressar na Polícia Militar do Maranhão tem caráter reservado, sendo formalizado apenas por termo escrito assinado perante a autoridade competente, sem necessidade de presença da tropa.", gabarito: "E", comentario: "Errado. O compromisso é solene e prestado perante a tropa (art. 45 do Estatuto)." },
+            { id: 74, numero: 74, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Sobre a subordinação da PMMA e suas competências gerais, nos termos da Lei n. 12.896/2026, A PMMA, órgão da administração direta, de regime especial, subordina-se hierarquicamente ao Governador do Estado.", gabarito: "C", comentario: "Certo. Art. 3º da Lei nº 12.896/2026." },
+            { id: 75, numero: 75, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Compete à Polícia Militar do Maranhão, nos termos de suas atribuições constitucionais e legais de executar com exclusividade, ressalvadas as missões peculiares das Forças Armadas, o policiamento ostensivo, fardado, planejado pela autoridade competente, a fim de assegurar o cumprimento da lei, a manutenção da ordem pública e o exercício dos poderes constituídos do Estado.", gabarito: "C", comentario: "Certo. Conforme literalidade do art. 4º." },
+            { id: 76, numero: 76, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Compõem a estrutura organizacional da Polícia Militar do Maranhão (PMMA) os fóruns da comarca de São Luís.", gabarito: "E", comentario: "Errado. Os fóruns do Poder Judiciário não integram a estrutura organizacional da Polícia Militar." },
+            { id: 77, numero: 77, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Os órgãos de direção geral da Polícia Militar do Maranhão são responsáveis pela elaboração da política institucional, pelo planejamento estratégico e pela administração superior da instituição, sendo integrados pelo Comando-Geral, Subcomando-Geral e Estado-Maior Geral.", gabarito: "C", comentario: "Certo. Art. 6º da Lei de Organização da PMMA." },
+            { id: 78, numero: 78, disciplina: "Legislação Institucional", textoBase: "", enunciado: "O Comandante-Geral da Polícia Militar do Maranhão será nomeado pelo Governador do Estado entre os oficiais da ativa do posto de Coronel do Quadro de Oficiais de Estado-Maior (QOEM), possuidor do Curso de Comando e Estado-Maior (CCEM).", gabarito: "C", comentario: "Certo. Art. 7º, § 1º." },
+            { id: 79, numero: 79, disciplina: "Legislação Institucional", textoBase: "", enunciado: "Compete ao Comandante-Geral promover oficiais e praças da Polícia Militar do Maranhão, independentemente de ato do Governador do Estado.", gabarito: "E", comentario: "Errado. Compete ao Comandante-Geral promover as praças e encaminhar as listas de promoção de oficiais para ato do Governador do Estado." },
+            { id: 80, numero: 80, disciplina: "Legislação Institucional", textoBase: "", enunciado: "No prazo de até 90 dias após sua nomeação, o Comandante-Geral deverá apresentar o Plano de Comando, documento destinado a estabelecer as diretrizes e os objetivos de sua gestão.", gabarito: "E", comentario: "Errado. Conforme o art. 9º, o prazo para apresentar o Plano de Comando é de até 60 dias (e não 90 dias)." },
+
+            // Noções de Informática (Q81 a Q120)
+            { id: 81, numero: 81, disciplina: "Noções de Informática", textoBase: "", enunciado: "Nos sistemas operacionais baseados na distribuição Linux, os ambientes de desktop GNOME e KDE Plasma operam como interfaces gráficas de usuário (GUI) intercambiáveis, sendo o GNOME construído historicamente sobre o conjunto de ferramentas toolkit GTK, enquanto o KDE Plasma fundamenta-se na biblioteca gráfica Qt.", gabarito: "C", comentario: "Certo. GNOME é baseado em GTK e KDE Plasma em Qt, sendo interfaces modulares e intercambiáveis no Linux." },
+            { id: 82, numero: 82, disciplina: "Noções de Informática", textoBase: "", enunciado: "O Nautilus é o gerenciador de arquivos padrão do ambiente gráfico KDE Plasma, enquanto o Dolphin desempenha nativamente essa mesma função no ambiente GNOME.", gabarito: "E", comentario: "Errado. Ocorreu a inversão: Nautilus é o gerenciador nativo do GNOME e Dolphin é o gerenciador do KDE Plasma." },
+            { id: 83, numero: 83, disciplina: "Noções de Informática", textoBase: "", enunciado: "O comando mv possui dupla finalidade no sistema operacional Linux, sendo empregado tanto para transferir a localização de arquivos e diretórios entre diferentes pastas quanto para alterar o nome de um arquivo no mesmo diretório de origem.", gabarito: "C", comentario: "Certo. O comando mv (move) é utilizado no terminal Linux tanto para mover quanto para renomear arquivos." },
+            { id: 84, numero: 84, disciplina: "Noções de Informática", textoBase: "", enunciado: "No sistema operacional Linux, a segurança e o controle de acesso ao sistema de arquivos baseiam-se na atribuição de permissões de leitura, escrita e execução para o dono do arquivo, para o grupo associado e para os demais usuários. A execução do comando chmod 754 arquivo.txt atribui permissão total (leitura, escrita e execução) ao proprietário do arquivo, permissão de leitura e execução ao grupo associado, e permissão exclusiva de leitura aos outros usuários do sistema.", gabarito: "C", comentario: "Certo. Na notação octal: 7 (4+2+1 = rwx - dono), 5 (4+0+1 = r-x - grupo), 4 (4+0+0 = r-- - outros)." },
+            { id: 85, numero: 85, disciplina: "Noções de Informática", textoBase: "", enunciado: "No Windows 11, o Menu Iniciar é posicionado, por padrão de instalação de fábrica, centralizado na Barra de Tarefas, sendo vedada ao usuário qualquer alteração de seu alinhamento para a extremidade esquerda nas configurações de personalização do sistema.", gabarito: "E", comentario: "Errado. O alinhamento padrão é centralizado, mas o sistema PERMITE alterar para a esquerda nas Configurações de Personalização." },
+            { id: 86, numero: 86, disciplina: "Noções de Informática", textoBase: "", enunciado: "O Windows Update no Windows 11 executa exclusivamente a atualização cumulativa de segurança do próprio sistema operacional, sendo incapaz de realizar a busca, o download e a instalação automática de drivers atualizados de dispositivos de hardware e de definições de segurança do Microsoft Defender Antivirus.", gabarito: "E", comentario: "Errado. O Windows Update atualiza também drivers de hardware e inteligência de segurança do Microsoft Defender Antivirus." },
+            { id: 87, numero: 87, disciplina: "Noções de Informática", textoBase: "", enunciado: "No Explorador de Arquivos do Windows 11, ao selecionar um arquivo gravado no disco rígido local (C:) e acionar a combinação de teclas de atalho Shift + Delete, o sistema solicita a confirmação do usuário e executa a exclusão permanente do item, removendo-o sem enviá-lo previamente para a Lixeira.", gabarito: "C", comentario: "Certo. O atalho Shift + Delete realiza a exclusão permanente, ignorando a Lixeira." },
+            { id: 88, numero: 88, disciplina: "Noções de Informática", textoBase: "", enunciado: "No sistema operacional Microsoft Windows 11 (configuração padrão, idioma português do Brasil), as ações de arrastar e soltar no Explorador de Arquivos comportam-se de maneira distinta conforme a localização dos diretórios de origem e destino em disco. Ao selecionar um arquivo armazenado na unidade local C: e arrastá-lo diretamente, utilizando apenas o botão principal do mouse (sem pressionar nenhuma tecla modificadora), para uma pasta situada na unidade removível E: (pendrive), o sistema operacional executa por padrão a operação de movimentação definitiva do arquivo, removendo-o da unidade C:.", gabarito: "E", comentario: "Errado. Ao arrastar e soltar entre unidades/volumes DIFERENTES (ex: C: para E:), o comportamento padrão do Windows é COPIAR o arquivo (e não mover)." },
+            { id: 89, numero: 89, disciplina: "Noções de Informática", textoBase: "", enunciado: "A funcionalidade de coautoria do Word 365 permite a colaboração simultânea entre diversos usuários em tempo real, sendo necessário que o arquivo esteja salvo em nuvem corporativa ou pessoal da Microsoft; contudo, caso dois usuários editem o mesmo parágrafo concomitantemente, o sistema bloqueia o acesso do segundo usuário até que o primeiro finalize a edição e feche a aplicação.", gabarito: "E", comentario: "Errado. A coautoria em tempo real não bloqueia o arquivo inteiro nem exige fechamento da aplicação; as alterações são mescladas dinamicamente." },
+            { id: 90, numero: 90, disciplina: "Noções de Informática", textoBase: "", enunciado: "Ao ativar o recurso 'Controlar Alterações' no Microsoft Word 365, todas as inserções, exclusões e alterações de formatação passam a ser registradas visualmente no texto, cabendo ao autor original ou revisor a prerrogativa de aceitar ou rejeitar cada uma das modificações de forma individual ou em bloco.", gabarito: "C", comentario: "Certo. Descreve exatamente a funcionalidade do Controle de Alterações no Word." },
+            { id: 91, numero: 91, disciplina: "Noções de Informática", textoBase: "", enunciado: "No LibreOffice Writer 26.2, a combinação de teclas de atalho padrão utilizada para salvar as alterações em um documento já existente em disco é Ctrl+B, enquanto o atalho Ctrl+S é reservado exclusivamente para aplicar a formatação de sublinhado ao texto selecionado.", gabarito: "E", comentario: "Errado. No LibreOffice Writer, Ctrl+S é Salvar (Save) e Ctrl+U é Sublinhado (Underline). A combinação citada (Ctrl+B para Salvar e Ctrl+S para Sublinhar) pertence ao MS Word em português." },
+            { id: 92, numero: 92, disciplina: "Noções de Informática", textoBase: "", enunciado: "No LibreOffice Writer 26.2, a combinação de teclas de atalho padrão utilizada para aplicar o alinhamento centralizado ao parágrafo selecionado é Ctrl+E, correspondendo ao mesmo atalho padrão empregado para essa função no Microsoft Word.", gabarito: "C", comentario: "Certo. Tanto no Word quanto no LibreOffice Writer, o atalho para centralizar parágrafo é Ctrl+E." },
+            { id: 93, numero: 93, disciplina: "Noções de Informática", textoBase: "", enunciado: "Ao aplicar a fórmula =MÉDIA(A1:A4) em um intervalo contendo os valores 10 na célula A1, 20 na célula A2, o texto 'Pendente' na célula A3 e o valor 30 na célula A4, o Microsoft Excel 365 ignora a célula textual no cômputo da média aritmética e retorna como resultado o valor 20.", gabarito: "C", comentario: "Certo. A função MÉDIA ignora células contendo texto em intervalos referenciados. Soma = 10+20+30 = 60. Quantidade de números = 3. 60/3 = 20." },
+            { id: 94, numero: 94, disciplina: "Noções de Informática", textoBase: "", enunciado: "No Microsoft Excel 365, as regras de Formatação Condicional aplicadas a um intervalo de dados são estáticas; portanto, caso o valor de uma célula seja modificado posteriormente pelo usuário, as cores de preenchimento e estilos visuais previamente atribuídos permanecem inalterados até que uma nova formatação seja configurada manualmente.", gabarito: "E", comentario: "Errado. A Formatação Condicional é DINÂMICA: altera automaticamente o estilo visual assim que o valor da célula atende ou deixa de atender à regra estipulada." },
+            { id: 95, numero: 95, disciplina: "Noções de Informática", textoBase: "", enunciado: "Ao selecionar a linha 5 em uma planilha do LibreOffice Calc 26.2 e acionar a opção de inserção de linhas no menu correspondente, o usuário pode optar explicitamente por inserir linhas acima ou linhas abaixo da seleção, deslocando os dados preexistentes sem sobrescrever o conteúdo das células.", gabarito: "C", comentario: "Certo. O LibreOffice Calc oferece nativamente as opções \"Linhas Acima\" e \"Linhas Abaixo\"." },
+            { id: 96, numero: 96, disciplina: "Noções de Informática", textoBase: "", enunciado: "Ao avaliar a fórmula =SE(B2>=50; 'Aprovado'; 'Reprovado'), caso a célula B2 contenha o valor numérico 45, o LibreOffice Calc 26.2 retornará como resultado na célula o texto 'Aprovado'.", gabarito: "E", comentario: "Errado. O teste B2>=50 resulta em 45>=50 (FALSO). O retorno para o caso FALSO é \"Reprovado\"." },
+            { id: 97, numero: 97, disciplina: "Noções de Informática", textoBase: "", enunciado: "Ao inserir um elemento gráfico institucional (como o brasão da corporação) no slide mestre principal no PowerPoint 365, essa imagem é replicada automaticamente em todos os layouts dependentes e slides da apresentação, garantindo a padronização visual sem a necessidade de inserção manual slide a slide.", gabarito: "C", comentario: "Certo. Essa é a função essencial do Slide Mestre." },
+            { id: 98, numero: 98, disciplina: "Noções de Informática", textoBase: "", enunciado: "No LibreOffice Impress 26.2, a combinação de teclas de atalho padrão utilizada para inserir um novo slide na apresentação corrente é Ctrl+N.", gabarito: "E", comentario: "Errado. O atalho para inserir novo slide é Ctrl+M. A combinação Ctrl+N cria uma nova apresentação." },
+            { id: 99, numero: 99, disciplina: "Noções de Informática", textoBase: "", enunciado: "O protocolo DNS atua na camada de aplicação da pilha TCP/IP e opera primordialmente com o protocolo de transporte UDP na porta 53 para consultas e respostas convencionais de resolução de nomes, podendo recorrer ao protocolo TCP quando o tamanho da mensagem exceder os limites suportados pelo pacote UDP padrão ou em operações de transferência de zona entre servidores.", gabarito: "C", comentario: "Certo. O DNS atua na camada de aplicação (porta 53) usando UDP para consultas padrão e TCP para transferências de zona ou mensagens grandes." },
+            { id: 100, numero: 100, disciplina: "Noções de Informática", textoBase: "", enunciado: "Uma intranet caracteriza-se por ser uma rede de acesso estritamente restrito aos membros de uma organização, implementada com base no conjunto de protocolos e tecnologias da Internet (família TCP/IP, serviços HTTP e FTP), sendo inviável que seus usuários acessem serviços externos da Internet a partir de suas estações conectadas à rede interna.", gabarito: "E", comentario: "Errado. É perfeitamente viável que usuários conectados à intranet acessem a Internet pública, desde que haja conexão/gateway e regras de segurança permitindo." },
+            { id: 101, numero: 101, disciplina: "Noções de Informática", textoBase: "", enunciado: "Ao utilizar a navegação InPrivate no Microsoft Edge, o histórico de navegação, os cookies, os dados de formulários e os arquivos temporários são excluídos automaticamente ao fechar todas as janelas anônimas; no entanto, esse recurso não oculta as atividades do usuário perante o provedor de acesso à Internet ou administradores de redes corporativas.", gabarito: "C", comentario: "Certo. A navegação privada limpa os dados locais na máquina, mas não esconde o tráfego dos administradores de rede ou provedores." },
+            { id: 102, numero: 102, disciplina: "Noções de Informática", textoBase: "", enunciado: "Ao fechar acidentalmente uma guia ativa durante uma sessão de navegação no Google Chrome, no Mozilla Firefox ou no Microsoft Edge, o usuário pode restaurar a última guia fechada por meio da combinação de teclas de atalho Ctrl+Shift+T.", gabarito: "C", comentario: "Certo. Ctrl+Shift+T é o atalho universal para reabrir abas recém-fechadas." },
+            { id: 103, numero: 103, disciplina: "Noções de Informática", textoBase: "", enunciado: "Ao configurar uma conta de correio eletrônico no Microsoft Outlook 365 ou no Mozilla Thunderbird utilizando o protocolo IMAP, as mensagens recebidas são sincronizadas diretamente com o servidor, permitindo que a leitura, a exclusão ou a criação de pastas sejam refletidas em todos os dispositivos conectados à mesma conta, diferentemente do comportamento padrão do protocolo POP3, que transfere as mensagens para o armazenamento local e as remove do servidor.", gabarito: "C", comentario: "Certo. IMAP funciona por sincronização no servidor; POP3 baixa e remove por padrão." },
+            { id: 104, numero: 104, disciplina: "Noções de Informática", textoBase: "", enunciado: "Quando um servidor recebe uma mensagem eletrônica na qual o seu endereço consta exclusivamente no campo de cópia oculta (Cco/Bcc), caso ele acione o comando 'Responder a Todos', sua mensagem de retorno será encaminhada unicamente ao remetente original e aos eventuais outros contatos que estavam inseridos de forma oculta em Cco, preservando o anonimato perante os destinatários dos campos Para e Cc.", gabarito: "E", comentario: "Errado. Ao acionar \"Responder a Todos\", a mensagem vai para o remetente e para TODOS os destinatários visíveis (Para e Cc), revelando a identidade do remetente oculto para todo o grupo." },
+            { id: 105, numero: 105, disciplina: "Noções de Informática", textoBase: "", enunciado: "Ao realizar uma pesquisa no Google utilizando a sintaxe edital concurso site:pm.ssp.ma.gov.br, o mecanismo de busca retornará páginas que contenham os termos 'edital' e 'concurso' hospedadas exclusivamente dentro do domínio ou subdomínio pm.ssp.ma.gov.br.", gabarito: "C", comentario: "Certo. O operador site: restringe a busca ao domínio especificado." },
+            { id: 106, numero: 106, disciplina: "Noções de Informática", textoBase: "", enunciado: "Ao realizar uma busca no Google utilizando a consulta 'policia militar' NOT civil filetype:pdf, o mecanismo de busca excluirá obrigatoriamente os resultados que contenham a palavra 'civil' e retornará exclusivamente arquivos em formato PDF que contenham a expressão exata 'policia militar', uma vez que a sintaxe NOT é o operador padrão de exclusão textual no indexador.", gabarito: "E", comentario: "Errado. O operador padrão de exclusão textual no Google é o sinal de menos (-) imediatamente colado à palavra (ex: -civil), e não o operador NOT." },
+            { id: 107, numero: 107, disciplina: "Noções de Informática", textoBase: "", enunciado: "Os fóruns de discussão na Internet caracterizam-se pela comunicação assíncrona organizada hierarquicamente em tópicos ou seções temáticas, nos quais as mensagens publicadas permanecem registradas para consulta posterior, dispensando a presença simultânea dos interlocutores para a interação.", gabarito: "C", comentario: "Certo. Fóruns de discussão são ferramentas de comunicação assíncrona." },
+            { id: 108, numero: 108, disciplina: "Noções de Informática", textoBase: "", enunciado: "O LinkedIn caracteriza-se como uma plataforma de rede social orientada predominantemente a relacionamentos profissionais, recrutamento e networking corporativo, na qual os perfis de usuários conectam-se por meio de níveis de proximidade (conexões de 1º, 2º e 3º graus), sendo terminantemente vedada pela plataforma a criação de páginas institucionais voltadas a órgãos públicos ou empresas privadas.", gabarito: "E", comentario: "Errado. É plenamente PERMITIDA e comum a criação de páginas institucionais (Company Pages) para empresas e órgãos públicos no LinkedIn." },
+            { id: 109, numero: 109, disciplina: "Noções de Informática", textoBase: "", enunciado: "No modelo de serviço IaaS, o provedor de nuvem responsabiliza-se pelo provisionamento e gerenciamento do hardware físico, da virtualização e da conectividade de rede, transferindo ao cliente contratante o controle e a responsabilidade pela instalação, configuração e manutenção dos sistemas operacionais, do middleware e das aplicações.", gabarito: "C", comentario: "Certo. No IaaS (Infraestrutura como Serviço), o cliente gerencia do Sistema Operacional para cima." },
+            { id: 110, numero: 110, disciplina: "Noções de Informática", textoBase: "", enunciado: "O Google Drive é a solução proprietária e nativa de armazenamento em nuvem desenvolvida pela Microsoft, responsável pela sincronização automática dos arquivos do usuário no ambiente Windows 11 e integrada nativamente ao pacote Microsoft 365.", gabarito: "E", comentario: "Errado. O Google Drive é desenvolvido pelo GOOGLE. A solução nativa da Microsoft é o OneDrive." },
+            { id: 111, numero: 111, disciplina: "Noções de Informática", textoBase: "", enunciado: "O princípio do não-repúdio (ou irretratabilidade) garante que o autor de uma mensagem, transação ou documento digital não possa negar a autoria ou a realização do ato, sendo esse atributo comumente implementado por meio do uso de assinatura digital baseada em criptografia assimétrica.", gabarito: "C", comentario: "Certo. O não-repúdio assegura a impossibilidade de negar a autoria de uma ação/documento assinado digitalmente." },
+            { id: 112, numero: 112, disciplina: "Noções de Informática", textoBase: "", enunciado: "O princípio da autenticidade assegura que a informação permaneça oculta contra o acesso e a visualização de terceiros não autorizados durante o seu tráfego na rede, garantindo que apenas o remetente e o destinatário legítimos tenham conhecimento do conteúdo transmitido.", gabarito: "E", comentario: "Errado. A garantia de sigilo e ocultação contra terceiros decorre da CONFIDENCIALIDADE (e não da autenticidade, que diz respeito à confirmação da identidade do emissor)." },
+            { id: 113, numero: 113, disciplina: "Noções de Informática", textoBase: "", enunciado: "A autenticação de dois fatores (2FA) e a autenticação multifator (MFA) fundamentam-se na exigência de elementos pertencentes a categorias distintas de autenticação, comumente divididas em algo que você sabe (como uma senha), algo que você tem (como um token físico ou aplicativo autenticador) e algo que você é (como a biometria), de modo que o fornecimento de duas senhas textuais distintas no mesmo fluxo de acesso não configura, tecnicamente, uma autenticação multifatorial.", gabarito: "C", comentario: "Certo. Para haver 2FA/MFA, os fatores devem pertencer a categorias distintas (sabe, tem, é)." },
+            { id: 114, numero: 114, disciplina: "Noções de Informática", textoBase: "", enunciado: "O certificado digital do tipo A1 emitido no âmbito da ICP-Brasil gera e armazena o respectivo par de chaves criptográficas exclusivamente em hardware criptográfico dedicado (como cartão inteligente ou token USB), sendo tecnicamente vedada a sua exportação ou instalação direta no sistema operacional do computador do usuário.", gabarito: "E", comentario: "Errado. O certificado A1 armazena as chaves via software (no próprio computador/navegador). Quem exige hardware dedicado (token/smartcard) é o tipo A3." },
+            { id: 115, numero: 115, disciplina: "Noções de Informática", textoBase: "", enunciado: "Na criptografia assimétrica, também denominada criptografia de chave pública, são utilizados dois pares distintos de chaves para cada usuário: a chave pública, que deve ser mantida em sigilo absoluto pelo seu proprietário para decifrar as mensagens, e a chave privada, que pode ser amplamente divulgada a terceiros para a realização da cifragem dos dados.", gabarito: "E", comentario: "Errado. A chave PRIVADA é que é mantida em sigilo absoluto, enquanto a chave PÚBLICA é divulgada abertamente." },
+            { id: 116, numero: 116, disciplina: "Noções de Informática", textoBase: "", enunciado: "O ransomware caracteriza-se como um tipo de código malicioso que torna inacessíveis os dados armazenados em um dispositivo, comumente por meio do uso de técnicas de criptografia, passando a exigir o pagamento de um resgate para que a vítima restabeleça o acesso aos arquivos afetados.", gabarito: "C", comentario: "Certo. Ransomware é o malware extorsivo que criptografa dados para exigir resgate." },
+            { id: 117, numero: 117, disciplina: "Noções de Informática", textoBase: "", enunciado: "O keylogger é uma categoria de software malicioso projetada para capturar e registrar sequencialmente todas as teclas digitadas pelo usuário no teclado físico do computador, sendo incapaz de operar como dispositivo físico acoplado entre o teclado e a porta de comunicação do computador.", gabarito: "E", comentario: "Errado. O keylogger PODE SIM operar como um dispositivo físico (hardware keylogger acoplado à entrada USB/PS2)." },
+            { id: 118, numero: 118, disciplina: "Noções de Informática", textoBase: "", enunciado: "A detecção heurística empregada por aplicativos antivírus baseia-se na análise estática de instruções e estruturas de código que se assemelham a comportamentos maliciosos conhecidos, permitindo identificar novas variantes de malware sem a necessidade de uma assinatura digital previamente catalogada, enquanto a detecção comportamental analisa as ações do programa durante a sua execução em tempo real.", gabarito: "C", comentario: "Certo. A heurística busca padrões suspeitos sem assinatura direta, e a comportamental analisa a execução em tempo real." },
+            { id: 119, numero: 119, disciplina: "Noções de Informática", textoBase: "", enunciado: "O firewall é um dispositivo de segurança projetado para inspecionar, filtrar e bloquear o tráfego de dados entre redes com base em um conjunto de regras preestabelecidas; no entanto, sua atuação restringe-se ao controle de portas e endereços IP, sendo uma ferramenta capaz de eliminar automaticamente vírus e malwares já instalados no sistema operacional do computador.", gabarito: "E", comentario: "Errado. O firewall filtra o tráfego de rede, mas NÃO remove nem elimina vírus já instalados no sistema operacional (função do antivírus)." },
+            { id: 120, numero: 120, disciplina: "Noções de Informática", textoBase: "", enunciado: "O backup do tipo incremental copia apenas os arquivos que foram criados ou modificados desde a execução do último backup (seja ele completo ou incremental) e desmarca o atributo de arquivamento dos arquivos copiados; dessa forma, para uma restauração completa dos dados, exige-se o último backup completo e todas as mídias dos backups incrementais subsequentes até a data desejada.", gabarito: "C", comentario: "Certo. O backup incremental grava as alterações desde o último backup de qualquer tipo, limpa o bit de arquivo e exige a cadeia completa para restauração." }
+        ];
+
+        // APPS STATE
+        let userAnswers = Array(120).fill('B'); // 'C', 'E', 'B'
+        let markedForReview = Array(120).fill(false);
+        let currentQuestionIndex = 0;
+        let timerInterval = null;
+        let timeRemainingSeconds = 0;
+        let totalTimeSeconds = 0;
+        let isExamFinished = false;
+
+        // VALIDAÇÃO AUTOMÁTICA DE CONTEÚDO
+        function validateQuestionsData() {
+            if (questions.length !== CONFIG.totalQuestoesEsperadas) {
+                alert(`Erro de Validação: Esperava-se ${CONFIG.totalQuestoesEsperadas} questões, mas foram encontradas ${questions.length}.`);
+                return false;
+            }
+            const numbers = questions.map(q => q.numero);
+            for (let i = 1; i <= CONFIG.totalQuestoesEsperadas; i++) {
+                if (!numbers.includes(i)) {
+                    alert(`Erro de Validação: Questão número ${i} está faltando.`);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!validateQuestionsData()) return;
+
+            setupEventListeners();
+            loadSettings();
+            checkExistingSession();
+            renderHistoryTable();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('btn-start-quiz').addEventListener('click', startNewQuizSession);
+            document.getElementById('timer-select').addEventListener('change', (e) => {
+                CONFIG.tempoMinutosPadrao = parseInt(e.target.value);
+            });
+
+            // Accessibility controls
+            document.getElementById('btn-theme-toggle').addEventListener('click', toggleDarkMode);
+            document.getElementById('btn-font-inc').addEventListener('click', () => changeFontSize(0.1));
+            document.getElementById('btn-font-dec').addEventListener('click', () => changeFontSize(-0.1));
+            document.getElementById('btn-font-reset').addEventListener('click', () => resetFontSize());
+
+            // Keydown Shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (isExamFinished) return;
+                const activeEl = document.activeElement;
+                if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT')) return;
+
+                const screenQuiz = document.getElementById('screen-quiz');
+                if (!screenQuiz.classList.contains('active')) return;
+
+                switch(e.key.toUpperCase()) {
+                    case 'C': selectAnswer('C'); break;
+                    case 'E': selectAnswer('E'); break;
+                    case 'B': selectAnswer('B'); break;
+                    case 'M': toggleReviewMark(); break;
+                    case 'ARROWLEFT': prevQuestion(); break;
+                    case 'ARROWRIGHT': nextQuestion(); break;
+                }
+            });
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        /* SESSION & AUTOSAVE */
+        function checkExistingSession() {
+            const savedSession = localStorage.getItem('pmma_simulado_session');
+            if (savedSession) {
+                document.getElementById('resume-modal').classList.add('active');
+            }
+        }
+
+        function resumeQuizSession() {
+            document.getElementById('resume-modal').classList.remove('active');
+            const sessionData = JSON.parse(localStorage.getItem('pmma_simulado_session'));
+            userAnswers = sessionData.userAnswers;
+            markedForReview = sessionData.markedForReview;
+            currentQuestionIndex = sessionData.currentQuestionIndex || 0;
+            timeRemainingSeconds = sessionData.timeRemainingSeconds;
+            totalTimeSeconds = sessionData.totalTimeSeconds;
+
+            initQuizUI();
+            startTimer();
+        }
+
+        function startNewQuizSession() {
+            document.getElementById('resume-modal').classList.remove('active');
+            userAnswers = Array(120).fill('B');
+            markedForReview = Array(120).fill(false);
+            currentQuestionIndex = 0;
+            isExamFinished = false;
+
+            const selectedMinutes = parseInt(document.getElementById('timer-select').value);
+            totalTimeSeconds = selectedMinutes * 60;
+            timeRemainingSeconds = totalTimeSeconds;
+
+            saveProgress();
+            initQuizUI();
+            startTimer();
+        }
+
+        function saveProgress() {
+            if (isExamFinished) return;
+            const sessionData = {
+                userAnswers,
+                markedForReview,
+                currentQuestionIndex,
+                timeRemainingSeconds,
+                totalTimeSeconds,
+                timestamp: new Date().getTime()
+            };
+            localStorage.setItem('pmma_simulado_session', JSON.stringify(sessionData));
+        }
+
+        /* TIMER MANAGEMENT */
+        function startTimer() {
+            clearInterval(timerInterval);
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timeRemainingSeconds--;
+                saveProgress();
+                updateTimerDisplay();
+
+                if (timeRemainingSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    alert("⏰ O tempo limite da prova foi atingido! O simulado será finalizado automaticamente.");
+                    finishQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const hours = Math.floor(timeRemainingSeconds / 3600);
+            const minutes = Math.floor((timeRemainingSeconds % 3600) / 60);
+            const seconds = timeRemainingSeconds % 60;
+
+            const displayStr = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            const timerEl = document.getElementById('timer-display');
+            timerEl.innerText = displayStr;
+
+            if (timeRemainingSeconds < 900) { // < 15 min
+                timerEl.classList.add('timer-warning');
+            } else {
+                timerEl.classList.remove('timer-warning');
+            }
+        }
+
+        /* QUIZ ENGINE */
+        function initQuizUI() {
+            showScreen('screen-quiz');
+            renderGridPanel();
+            loadQuestion(currentQuestionIndex);
+        }
+
+        function renderGridPanel() {
+            const gridEl = document.getElementById('question-grid');
+            gridEl.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const cell = document.createElement('div');
+                cell.className = 'q-cell';
+                cell.innerText = String(q.numero).padStart(2, '0');
+
+                if (idx === currentQuestionIndex) cell.classList.add('active');
+                if (userAnswers[idx] !== 'B') cell.classList.add('answered');
+                if (markedForReview[idx]) cell.classList.add('review');
+
+                cell.addEventListener('click', () => goToQuestion(idx));
+                gridEl.appendChild(cell);
+            });
+        }
+
+        function loadQuestion(index) {
+            currentQuestionIndex = index;
+            const q = questions[index];
+
+            document.getElementById('discipline-badge').innerText = q.disciplina;
+            document.getElementById('q-progress-text').innerText = `Questão ${q.numero} de 120`;
+            document.getElementById('question-text').innerText = `${q.numero}. ${q.enunciado}`;
+
+            // Text base display
+            const textBaseBox = document.getElementById('text-base-container');
+            const textBaseContent = document.getElementById('text-base-content');
+            if (q.textoBase && q.textoBase.trim() !== '') {
+                textBaseContent.innerText = q.textoBase;
+                textBaseBox.style.display = 'block';
+            } else {
+                textBaseBox.style.display = 'none';
+            }
+
+            // Options highlights
+            const currentAns = userAnswers[index];
+            document.getElementById('opt-certo').className = `option-btn ${currentAns === 'C' ? 'selected-certo' : ''}`;
+            document.getElementById('opt-errado').className = `option-btn ${currentAns === 'E' ? 'selected-errado' : ''}`;
+            document.getElementById('opt-branco').className = `option-btn ${currentAns === 'B' ? 'selected-branco' : ''}`;
+
+            // Mark button style
+            const markBtn = document.getElementById('btn-mark-review');
+            if (markedForReview[index]) {
+                markBtn.style.backgroundColor = 'var(--warning-color)';
+                markBtn.style.color = 'white';
+            } else {
+                markBtn.style.backgroundColor = 'transparent';
+                markBtn.style.color = 'var(--text-primary)';
+            }
+
+            // Prev/Next enable state
+            document.getElementById('btn-prev').disabled = (index === 0);
+            document.getElementById('btn-next').innerText = (index === questions.length - 1) ? 'Revisar / Finalizar' : 'Próxima →';
+
+            renderGridPanel();
+        }
+
+        function selectAnswer(ans) {
+            if (isExamFinished) return;
+            userAnswers[currentQuestionIndex] = ans;
+            saveProgress();
+            loadQuestion(currentQuestionIndex);
+        }
+
+        function toggleReviewMark() {
+            if (isExamFinished) return;
+            markedForReview[currentQuestionIndex] = !markedForReview[currentQuestionIndex];
+            saveProgress();
+            loadQuestion(currentQuestionIndex);
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                loadQuestion(currentQuestionIndex + 1);
+            } else {
+                confirmFinishExam();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                loadQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        function goToQuestion(index) {
+            loadQuestion(index);
+        }
+
+        function confirmFinishExam() {
+            const answeredCount = userAnswers.filter(a => a !== 'B').length;
+            const blankCount = 120 - answeredCount;
+            const markedCount = markedForReview.filter(m => m).length;
+
+            const msg = `Tem certeza que deseja finalizar o simulado?\n\n- Respondidas: ${answeredCount}\n- Em Branco: ${blankCount}\n- Marcadas para Revisão: ${markedCount}`;
+            if (confirm(msg)) {
+                finishQuiz();
+            }
+        }
+
+        /* FINISH & CALCULATE RESULTS */
+        function finishQuiz() {
+            isExamFinished = true;
+            clearInterval(timerInterval);
+            localStorage.removeItem('pmma_simulado_session');
+
+            const result = calculateResults();
+            saveAttemptHistory(result);
+            renderResultsUI(result);
+            showScreen('screen-results');
+        }
+
+        function calculateResults() {
+            let correctCount = 0;
+            let wrongCount = 0;
+            let blankCount = 0;
+
+            const disciplineStats = {};
+
+            questions.forEach((q, idx) => {
+                if (!disciplineStats[q.disciplina]) {
+                    disciplineStats[q.disciplina] = { total: 0, correct: 0, wrong: 0, blank: 0 };
+                }
+                disciplineStats[q.disciplina].total++;
+
+                const userAns = userAnswers[idx];
+                if (userAns === 'B') {
+                    blankCount++;
+                    disciplineStats[q.disciplina].blank++;
+                } else if (userAns === q.gabarito) {
+                    correctCount++;
+                    disciplineStats[q.disciplina].correct++;
+                } else {
+                    wrongCount++;
+                    disciplineStats[q.disciplina].wrong++;
+                }
+            });
+
+            // Cebraspe scoring = Correct - Wrong
+            const finalScore = (correctCount * CONFIG.pontuacaoCerta) + (wrongCount * CONFIG.pontuacaoErrada);
+            const timeSpentSec = totalTimeSeconds - timeRemainingSeconds;
+            const percent = Math.max(0, ((finalScore / 120) * 100)).toFixed(1);
+
+            return {
+                finalScore,
+                correctCount,
+                wrongCount,
+                blankCount,
+                percent,
+                timeSpentSec,
+                disciplineStats
+            };
+        }
+
+        function renderResultsUI(res) {
+            document.getElementById('res-score').innerText = res.finalScore;
+            document.getElementById('res-correct').innerText = res.correctCount;
+            document.getElementById('res-wrong').innerText = res.wrongCount;
+            document.getElementById('res-blank').innerText = res.blankCount;
+            document.getElementById('res-percent').innerText = `${res.percent}%`;
+
+            const m = Math.floor(res.timeSpentSec / 60);
+            const s = res.timeSpentSec % 60;
+            document.getElementById('res-time-spent').innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+            // Discipline Table
+            const discTbody = document.querySelector('#discipline-results-table tbody');
+            discTbody.innerHTML = '';
+
+            for (const [disc, stat] of Object.entries(res.disciplineStats)) {
+                const discScore = stat.correct - stat.wrong;
+                const discPct = Math.max(0, ((discScore / stat.total) * 100)).toFixed(1);
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${disc}</strong></td>
+                    <td>${stat.total}</td>
+                    <td style="color: var(--success-color); font-weight: 600;">${stat.correct}</td>
+                    <td style="color: var(--danger-color); font-weight: 600;">${stat.wrong}</td>
+                    <td>${stat.blank}</td>
+                    <td><strong>${discScore}</strong></td>
+                    <td>${discPct}%</td>
+                `;
+                discTbody.appendChild(tr);
+            }
+
+            renderReviewList('all');
+        }
+
+        function renderReviewList(filter, searchText = '') {
+            const container = document.getElementById('review-list');
+            container.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                const isCorrect = (userAns === q.gabarito);
+                const isBlank = (userAns === 'B');
+                const isMarked = markedForReview[idx];
+
+                // Filtering logic
+                if (filter === 'correct' && (!isCorrect || isBlank)) return;
+                if (filter === 'incorrect' && (isCorrect || isBlank)) return;
+                if (filter === 'blank' && !isBlank) return;
+                if (filter === 'marked' && !isMarked) return;
+
+                if (searchText.trim() !== '') {
+                    const st = searchText.toLowerCase();
+                    const matchNum = String(q.numero) === st;
+                    const matchDisc = q.disciplina.toLowerCase().includes(st);
+                    const matchEnun = q.enunciado.toLowerCase().includes(st);
+                    if (!matchNum && !matchDisc && !matchEnun) return;
+                }
+
+                let cardClass = isBlank ? 'blank' : (isCorrect ? 'correct' : 'incorrect');
+                let resultBadge = isBlank ? '⚪ EM BRANCO' : (isCorrect ? '✅ CORRETO' : '❌ INCORRETO');
+
+                const card = document.createElement('div');
+                card.className = `review-card ${cardClass}`;
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+                        <span><strong>Questão ${q.numero}</strong> | ${q.disciplina}</span>
+                        <span>${resultBadge} ${isMarked ? ' ★ (Marcada)' : ''}</span>
+                    </div>
+                    ${q.textoBase ? `<div class="text-base-box" style="font-size:0.85rem; max-height: 150px;">${q.textoBase}</div>` : ''}
+                    <div style="font-weight: 600; margin-bottom: 0.75rem;">${q.enunciado}</div>
+                    <div style="font-size: 0.9rem; margin-bottom: 0.5rem;">
+                        Sua resposta: <strong>${formatAnswerText(userAns)}</strong> | 
+                        Gabarito Oficial: <strong>${formatAnswerText(q.gabarito)}</strong>
+                    </div>
+                    <div class="comment-box">
+                        <strong>Comentário Oficial:</strong><br>${q.comentario}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function formatAnswerText(ans) {
+            if (ans === 'C') return 'CERTO';
+            if (ans === 'E') return 'ERRADO';
+            return 'EM BRANCO';
+        }
+
+        function filterReview(type) {
+            const searchVal = document.getElementById('search-input').value;
+            renderReviewList(type, searchVal);
+        }
+
+        function searchReview() {
+            const searchVal = document.getElementById('search-input').value;
+            renderReviewList('all', searchVal);
+        }
+
+        /* HISTORY STORAGE */
+        function saveAttemptHistory(res) {
+            let history = JSON.parse(localStorage.getItem('pmma_simulado_history') || '[]');
+            const attempt = {
+                date: new Date().toLocaleString('pt-BR'),
+                score: res.finalScore,
+                correct: res.correctCount,
+                wrong: res.wrongCount,
+                blank: res.blankCount,
+                percent: res.percent
+            };
+            history.unshift(attempt);
+            localStorage.setItem('pmma_simulado_history', JSON.stringify(history));
+            renderHistoryTable();
+        }
+
+        function renderHistoryTable() {
+            const history = JSON.parse(localStorage.getItem('pmma_simulado_history') || '[]');
+            const card = document.getElementById('history-card');
+            const tbody = document.querySelector('#history-table tbody');
+
+            if (history.length === 0) {
+                card.style.display = 'none';
+                return;
+            }
+
+            card.style.display = 'block';
+            tbody.innerHTML = '';
+
+            history.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.date}</td>
+                    <td><strong>${item.score}</strong></td>
+                    <td style="color: var(--success-color);">${item.correct}</td>
+                    <td style="color: var(--danger-color);">${item.wrong}</td>
+                    <td>${item.blank}</td>
+                    <td>${item.percent}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        /* EXPORT & UTILS */
+        function exportResultsJSON() {
+            const result = calculateResults();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(result, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `resultado_simulado_pmma_${new Date().getTime()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function resetQuiz() {
+            if (confirm("Deseja reiniciar a visualização e voltar para a tela inicial?")) {
+                showScreen('screen-start');
+            }
+        }
+
+        /* ACCESSIBILITY PREFERENCES */
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('pmma_theme', isDark ? 'dark' : 'light');
+        }
+
+        let currentFontScale = 1.0;
+        function changeFontSize(delta) {
+            currentFontScale = Math.min(Math.max(0.8, currentFontScale + delta), 1.4);
+            document.documentElement.style.setProperty('--font-scale', `${currentFontScale}rem`);
+            localStorage.setItem('pmma_font_scale', currentFontScale);
+        }
+
+        function resetFontSize() {
+            currentFontScale = 1.0;
+            document.documentElement.style.setProperty('--font-scale', '1rem');
+            localStorage.removeItem('pmma_font_scale');
+        }
+
+        function loadSettings() {
+            const savedTheme = localStorage.getItem('pmma_theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+
+            const savedFont = localStorage.getItem('pmma_font_scale');
+            if (savedFont) {
+                currentFontScale = parseFloat(savedFont);
+                document.documentElement.style.setProperty('--font-scale', `${currentFontScale}rem`);
+            }
+        }
+    </script>
+</body>
+</html>
